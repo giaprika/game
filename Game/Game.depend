@@ -1,0 +1,27 @@
+# depslib dependency file v1.0
+1711804327 source:d:\game\main.cpp
+	"Define.h"
+	"BaseObject.h"
+	"Bird.h"
+
+1711549415 d:\game\define.h
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_net.h>
+	<SDL_mixer.h>
+	<SDL_ttf.h>
+	<bits/stdc++.h>
+
+1711804313 d:\game\baseobject.h
+	"Define.h"
+
+1711804313 source:d:\game\baseobject.cpp
+	"BaseObject.h"
+	"Define.h"
+
+1711804362 source:d:\game\bird.cpp
+	"Bird.h"
+
+1711555869 d:\game\bird.h
+	"BaseObject.h"
+
