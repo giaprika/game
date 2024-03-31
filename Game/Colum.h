@@ -17,4 +17,18 @@ public:
     void Run(int x_val);
 };
 
+class DoubleColum
+{
+private:
+    Colum top_colum;
+    Colum bottom_colum;
+    int x_run;
+public:
+    DoubleColum();
+    bool InitColum(SDL_Renderer* render_);
+    void ShowDoubleColum(SDL_Renderer* render_);
+    void Move();
+
+};
+
 #endif // COLUM_H_INCLUDED
