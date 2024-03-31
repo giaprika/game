@@ -16,6 +16,7 @@ public:
     void Render(SDL_Renderer* render_);
     void Free();
     void SetRect(const int& x, const int& y);
+    SDL_Rect GetRect() const;
 
 
 };

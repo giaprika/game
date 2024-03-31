@@ -1,6 +1,7 @@
 #include "Define.h"
 #include "BaseObject.h"
 #include "Bird.h"
+#include "Colum.h"
 
 BaseObject bk_grd;
 bool Init()
@@ -48,6 +49,9 @@ int main(int argc, char* argv[])
 
     Bird bird;
     ret = bird.loadImage(render_, "fl_bird.png");
+    Colum colum;
+    ret = colum.LoadColum(render_, "bottomblock2.png");
+    colum.SetPos(1000, 320);
     if(ret == false) return -1;
     bird.SetRect(100, 100);
     bool quit=false;
@@ -64,7 +68,12 @@ int main(int argc, char* argv[])
 
 
         }
+
+
         bk_grd.Render(render_);
+        colum.Run(-2);
+        colum.ShowColum(render_);
+
         bird.Run();
         bird.Render(render_);
         SDL_RenderPresent(render_);
