@@ -17,8 +17,6 @@ public:
     void Free();
     void SetRect(const int& x, const int& y);
     SDL_Rect GetRect() const;
-
-
 };
 
 #endif // BASEOBJECT_H_INCLUDED

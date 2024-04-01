@@ -111,6 +111,15 @@ void DoubleColum::Setisback_(bool ib_)
     bottom_colum.Setisback(ib_);
 }
 
+bool DoubleColum::CheckCollision(const SDL_Rect &rect)
+{
+    SDL_Rect rect1 = top_colum.GetRectColum();
+    SDL_Rect rect2 = bottom_colum.GetRectColum();
+    bool ret1 = SDL_HasIntersection(&rect1, &rect);
+    bool ret2 = SDL_HasIntersection(&rect2, &rect);
+    return (ret1 || ret2);
+}
+
 ColumList::ColumList()
 {
     end_list=0;
@@ -167,3 +176,9 @@ void ColumList::ShowList(SDL_Renderer* render_)
         cl->ShowDoubleColum(render_);
     }
 }
+
+void ColumList::SetBird_rect(SDL_Rect bird_rect)
+{
+    Bird_rect = bird_rect;
+}
+

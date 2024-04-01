@@ -19,7 +19,4 @@ public:
     void Run();
 };
 
-
-
-
 #endif // BIRD_H_INCLUDED

@@ -37,7 +37,7 @@ public:
     SDL_Rect GetTopRect();
     bool Getisback_();
     void Setisback_(bool ib_);
-
+    bool CheckCollision(const SDL_Rect &rect);
 };
 
 class ColumList
@@ -45,12 +45,13 @@ class ColumList
 private:
     std::vector<DoubleColum*> Colum_list;
     int end_list;
+    SDL_Rect Bird_rect;
 public:
     ColumList();
     bool InitColumList(SDL_Renderer* render_);
     void ShowList(SDL_Renderer* render_);
-
+    void SetBird_rect(SDL_Rect bird_rect);
+    std::vector<DoubleColum*> GetList() {return Colum_list;}
 };
-
 
 #endif // COLUM_H_INCLUDED
