@@ -25,10 +25,10 @@
 1711555869 d:\game\bird.h
 	"BaseObject.h"
 
-1711804362 source:d:\gamegithub\game\game\bird.cpp
+1711960750 source:d:\gamegithub\game\game\bird.cpp
 	"Bird.h"
 
-1711555869 d:\gamegithub\game\game\bird.h
+1711958795 d:\gamegithub\game\game\bird.h
 	"BaseObject.h"
 
 1711850175 d:\gamegithub\game\game\baseobject.h
@@ -42,18 +42,18 @@
 	<SDL_ttf.h>
 	<bits/stdc++.h>
 
-1711850175 source:d:\gamegithub\game\game\baseobject.cpp
+1711940127 source:d:\gamegithub\game\game\baseobject.cpp
 	"BaseObject.h"
 	"Define.h"
 
-1711935313 source:d:\gamegithub\game\game\colum.cpp
+1711937410 source:d:\gamegithub\game\game\colum.cpp
 	"BaseObject.h"
 	"Colum.h"
 
 1711935745 d:\gamegithub\game\game\colum.h
 	"BaseObject.h"
 
-1711933521 source:d:\gamegithub\game\game\main.cpp
+1711961019 source:d:\gamegithub\game\game\main.cpp
 	"Define.h"
 	"BaseObject.h"
 	"Bird.h"

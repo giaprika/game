@@ -1,7 +1,7 @@
 #include "BaseObject.h"
 #include "Colum.h"
 
-int pos[6]={1000, 1300, 1600, 1850, 2150, 2400};
+int pos[7]={1000, 1300, 1600, 1850, 2150, 2400, 2650};
 Colum::Colum()
 {
     x_pos_=0;
@@ -65,8 +65,10 @@ bool DoubleColum::InitColum(SDL_Renderer* render_, const int &xp)
 {
     bool ret1= top_colum.LoadColum(render_, "top_colum.png");
     bool ret2= bottom_colum.LoadColum(render_, "bottom_colum.png");
-    top_colum.SetPos(xp, -300);
-    bottom_colum.SetPos(xp, 400);
+    int topx = -520 + rand()%311 + 70;
+    int bottomx = topx + 520 + 130 + rand()%31;
+    top_colum.SetPos(xp, topx);
+    bottom_colum.SetPos(xp, bottomx);
     if(ret1 && ret2) return true;
     else return false;
 }
@@ -119,9 +121,10 @@ bool ColumList::InitColumList(SDL_Renderer* render_)
     DoubleColum* colum1 = new DoubleColum();
     DoubleColum* colum2 = new DoubleColum();
     DoubleColum* colum3 = new DoubleColum();
-    DoubleColum* colum5 = new DoubleColum();
     DoubleColum* colum4 = new DoubleColum();
+    DoubleColum* colum5 = new DoubleColum();
     DoubleColum* colum6 = new DoubleColum();
+    DoubleColum* colum7 = new DoubleColum();
 
     bool ret1 = colum1->InitColum(render_, pos[0]);
     bool ret2 = colum2->InitColum(render_, pos[1]);
@@ -129,6 +132,7 @@ bool ColumList::InitColumList(SDL_Renderer* render_)
     bool ret4 = colum4->InitColum(render_, pos[3]);
     bool ret5 = colum5->InitColum(render_, pos[4]);
     bool ret6 = colum6->InitColum(render_, pos[5]);
+    bool ret7 = colum7->InitColum(render_, pos[6]);
 
     Colum_list.push_back(colum1);
     Colum_list.push_back(colum2);
@@ -136,10 +140,11 @@ bool ColumList::InitColumList(SDL_Renderer* render_)
     Colum_list.push_back(colum4);
     Colum_list.push_back(colum5);
     Colum_list.push_back(colum6);
+    Colum_list.push_back(colum7);
 
-    end_list = 5;
+    end_list = 6;
 
-    if(ret1 && ret2 && ret3 && ret4 && ret5 && ret6) return true;
+    if(ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7) return true;
     else return false;
 
 }
@@ -153,7 +158,7 @@ void ColumList::ShowList(SDL_Renderer* render_)
         if(cl->Getisback_()){
             DoubleColum* endcl = Colum_list.at(end_list);
             SDL_Rect end_rect = endcl->GetTopRect();
-            int xp = end_rect.x + 250;
+            int xp = end_rect.x + rand()%70 + 180;
             cl->SetX(xp);
             cl->Setisback_(false);
             end_list = i;
