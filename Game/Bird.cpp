@@ -31,8 +31,8 @@ void Bird::HandleInputAction(SDL_Event events)
 
 bool Bird::LoadBird(SDL_Renderer* render_, std::string file1, std::string file2)
 {
-    text1 = IMG_LoadTexture(render_, "bird1.png");
-    text2 = IMG_LoadTexture(render_, "bird2.png");
+    text1 = IMG_LoadTexture(render_, "img//bird1.png");
+    text2 = IMG_LoadTexture(render_, "img//bird2.png");
     return (text1 != NULL && text2 != NULL);
 }
 

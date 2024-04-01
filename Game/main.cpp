@@ -47,13 +47,13 @@ int main(int argc, char* argv[])
 {
     srand(time(NULL));
     if(Init() == false) return -1;
-    bool ret = bk_grd.loadImage(render_, "bk_ground.jpg");
+    bool ret = bk_grd.loadImage(render_, "img//bk_ground.jpg");
     if(ret == false) return -1;
 
     Bird bird;
-    ret = bird.loadImage(render_, "bird1.png");
+    ret = bird.loadImage(render_, "img//bird1.png");
     if(ret == false) return -1;
-    ret = bird.LoadBird(render_, "bird1.png", "bird2.png");
+    ret = bird.LoadBird(render_, "img//bird1.png", "img\bird2.png");
     if(ret == false) return -1;
     ColumList colum_;
     ret = colum_.InitColumList(render_);

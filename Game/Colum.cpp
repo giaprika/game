@@ -63,8 +63,8 @@ DoubleColum::DoubleColum()
 
 bool DoubleColum::InitColum(SDL_Renderer* render_, const int &xp)
 {
-    bool ret1= top_colum.LoadColum(render_, "top_colum.png");
-    bool ret2= bottom_colum.LoadColum(render_, "bottom_colum.png");
+    bool ret1= top_colum.LoadColum(render_, "img//top_colum.png");
+    bool ret2= bottom_colum.LoadColum(render_, "img//bottom_colum.png");
     int topx = -520 + rand()%311 + 70;
     int bottomx = topx + 520 + 130 + rand()%31;
     top_colum.SetPos(xp, topx);
