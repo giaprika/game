@@ -7,6 +7,7 @@ class Colum : BaseObject
 private:
     int x_pos_;
     int y_pos_;
+    bool is_back;
 public:
     Colum();
     ~Colum();
@@ -16,6 +17,8 @@ public:
     void SetXpos(const int &xp);
     SDL_Rect GetRectColum() const;
     void Run(int x_val);
+    bool Getisback();
+    void Setisback(bool ib);
 };
 
 class DoubleColum
@@ -24,6 +27,7 @@ private:
     Colum top_colum;
     Colum bottom_colum;
     int x_run;
+    bool is_back_;
 public:
     DoubleColum();
     bool InitColum(SDL_Renderer* render_, const int &xp);
@@ -31,6 +35,8 @@ public:
     void Move();
     void SetX(const int &xp);
     SDL_Rect GetTopRect();
+    bool Getisback_();
+    void Setisback_(bool ib_);
 
 };
 

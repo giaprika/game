@@ -6,6 +6,7 @@ Colum::Colum()
 {
     x_pos_=0;
     y_pos_=0;
+    is_back=false;
 }
 Colum::~Colum()
 {
@@ -41,11 +42,23 @@ SDL_Rect Colum::GetRectColum() const
 void Colum::Run(int x_val)
 {
     rect_.x += x_val;
+    if(rect_.x + rect_.w < 0) is_back = true;
+}
+
+bool Colum::Getisback()
+{
+    return is_back;
+}
+
+void Colum::Setisback(bool ib)
+{
+    is_back = ib;
 }
 
 DoubleColum::DoubleColum()
 {
     x_run = -3;
+    is_back_ = false;
 }
 
 bool DoubleColum::InitColum(SDL_Renderer* render_, const int &xp)
@@ -68,6 +81,9 @@ void DoubleColum::Move()
 {
     top_colum.Run(x_run);
     bottom_colum.Run(x_run);
+    if(top_colum.Getisback() || bottom_colum.Getisback()){
+        is_back_ = true;
+    }
 }
 
 void DoubleColum::SetX(const int &xp)
@@ -80,6 +96,19 @@ SDL_Rect DoubleColum::GetTopRect()
 {
     return top_colum.GetRectColum();
 }
+
+bool DoubleColum::Getisback_()
+{
+    return is_back_;
+}
+
+void DoubleColum::Setisback_(bool ib_)
+{
+    is_back_ = ib_;
+    top_colum.Setisback(ib_);
+    bottom_colum.Setisback(ib_);
+}
+
 ColumList::ColumList()
 {
     end_list=0;
@@ -121,11 +150,15 @@ void ColumList::ShowList(SDL_Renderer* render_)
     for(int i=0; i<Colum_list.size(); i++){
         DoubleColum* cl = Colum_list.at(i);
         cl->Move();
-//        DoubleColum* endcl = Colum_list.at(end_list);
-//        SDL_Rect end_rect = endcl->GetTopRect();
-//        int xp = end_rect.x + 250;
-//        cl->SetX(xp);
-//        end_list = i;
+        if(cl->Getisback_()){
+            DoubleColum* endcl = Colum_list.at(end_list);
+            SDL_Rect end_rect = endcl->GetTopRect();
+            int xp = end_rect.x + 250;
+            cl->SetX(xp);
+            cl->Setisback_(false);
+            end_list = i;
+        }
+
         cl->ShowDoubleColum(render_);
     }
 }
