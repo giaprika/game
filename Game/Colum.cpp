@@ -59,6 +59,7 @@ DoubleColum::DoubleColum()
 {
     x_run = -3;
     is_back_ = false;
+    is_pass_ = false;
 }
 
 bool DoubleColum::InitColum(SDL_Renderer* render_, const int &xp)
@@ -69,6 +70,18 @@ bool DoubleColum::InitColum(SDL_Renderer* render_, const int &xp)
     int bottomx = topx + 520 + 130 + rand()%31;
     top_colum.SetPos(xp, topx);
     bottom_colum.SetPos(xp, bottomx);
+
+//    SDL_Rect top = top_colum.GetRectColum();
+//    SDL_Rect bottom = bottom_colum.GetRectColum();
+//    pass_rect.x = top.x+top.w;
+//    pass_rect.y = (top.y+top.h);
+//    pass_rect.w = 10;
+//    pass_rect.h = bottom.y - (top.y + top.h);
+//    pass_rect.x = 100;
+//    pass_rect.y = 100;
+//    pass_rect.w = 5;
+//    pass_rect.h = 100;
+
     if(ret1 && ret2) return true;
     else return false;
 }
@@ -120,13 +133,37 @@ bool DoubleColum::CheckCollision(const SDL_Rect &rect)
     return (ret1 || ret2);
 }
 
+bool DoubleColum::CheckPass(const SDL_Rect &rect)
+{
+    bool ret = SDL_HasIntersection(&pass_rect, &rect);
+    return ret;
+}
+
 ColumList::ColumList()
 {
     end_list=0;
+    die = false;
+    Bird_die = NULL;
+    music = nullptr;
+}
+
+void DoubleColum::SetPassrect()
+{
+    SDL_Rect top = top_colum.GetRectColum();
+    SDL_Rect bottom = bottom_colum.GetRectColum();
+    pass_rect.x = top.x + top.w + 64;
+    pass_rect.y = top.y + top.h;
+    pass_rect.w = 1;
+    pass_rect.h = bottom.y - (top.y + top.h);
 }
 
 bool ColumList::InitColumList(SDL_Renderer* render_)
 {
+    Bird_die = IMG_LoadTexture(render_, "img//bird3.png");
+    if(Bird_die == NULL) return false;
+    music = Mix_LoadMUS("nhacnen.mp3");
+    if(music == nullptr) return false;
+
     DoubleColum* colum1 = new DoubleColum();
     DoubleColum* colum2 = new DoubleColum();
     DoubleColum* colum3 = new DoubleColum();
@@ -161,8 +198,12 @@ bool ColumList::InitColumList(SDL_Renderer* render_)
 void ColumList::ShowList(SDL_Renderer* render_)
 {
 //    Colum_list[0].ShowDoubleColum(render_);
+    if (Mix_PlayingMusic() == 0){
+           Mix_PlayMusic( music, -1 );
+    }
     for(int i=0; i<Colum_list.size(); i++){
         DoubleColum* cl = Colum_list.at(i);
+        cl->SetPassrect();
         cl->Move();
         if(cl->Getisback_()){
             DoubleColum* endcl = Colum_list.at(end_list);
@@ -170,7 +211,27 @@ void ColumList::ShowList(SDL_Renderer* render_)
             int xp = end_rect.x + rand()%70 + 180;
             cl->SetX(xp);
             cl->Setisback_(false);
+            cl->Setispass(false);
             end_list = i;
+        }
+        if(cl->CheckCollision(Bird_rect)){
+            Bird_rect.w = 64;
+            Bird_rect.h = 56;
+            SDL_RenderCopy(render_, Bird_die, NULL, &Bird_rect);
+            Mix_Chunk* gChunk = Mix_LoadWAV("collide.wav");
+            if (gChunk != nullptr) {
+                Mix_PlayChannel( -1, gChunk, 0 );
+            }
+            Mix_PauseMusic();
+            die = true;
+        }
+        if(cl->CheckPass(Bird_rect)){
+            if(cl->Getispass() == false){
+                Mix_Chunk* ting = Mix_LoadWAV("ting.wav");
+                if (ting != NULL)  Mix_PlayChannel(-1, ting, 0);
+                cl->Setispass(true);
+            }
+
         }
 
         cl->ShowDoubleColum(render_);

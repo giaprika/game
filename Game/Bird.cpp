@@ -2,10 +2,10 @@
 
 Bird::Bird()
 {
-    x_val_=0;
-    y_val_=2;
+    speed = 2;
     text1 = NULL;
     text2 = NULL;
+    text3 = NULL;
     dem=0;
 }
 Bird::~Bird()
@@ -18,42 +18,50 @@ void Bird::HandleInputAction(SDL_Event events)
   if( events.type == SDL_KEYDOWN )
   {
       if(events.key.keysym.sym == SDLK_UP || events.key.keysym.sym == SDLK_SPACE){
-            y_val_= -9;
+            speed = -15;
       }
   }
   else if( events.type == SDL_KEYUP )
   {
       if(events.key.keysym.sym == SDLK_UP || events.key.keysym.sym == SDLK_SPACE){
-            y_val_=4;
+            speed = 1;
       }
   }
 }
 
-bool Bird::LoadBird(SDL_Renderer* render_, std::string file1, std::string file2)
+bool Bird::LoadBird(SDL_Renderer* render_, std::string file1, std::string file2, std::string file3)
 {
-    text1 = IMG_LoadTexture(render_, "img//bird1.png");
-    text2 = IMG_LoadTexture(render_, "img//bird2.png");
-    return (text1 != NULL && text2 != NULL);
+    text1 = IMG_LoadTexture(render_, file1.c_str());
+    text2 = IMG_LoadTexture(render_, file2.c_str());
+    text3 = IMG_LoadTexture(render_, file3.c_str());
+    return (text1 != NULL && text2 != NULL && text3 != NULL);
 }
 
 void Bird::RenderBird(SDL_Renderer* render_)
 {
     dem++;
-    if(dem<35){
+    if(dem<10){
         rect_.w = 64;
         rect_.h = 48;
         SDL_RenderCopy(render_, text1, NULL, &rect_);
-    }else if (dem>=35 && dem<70){
+    }else{
         rect_.w = 64;
         rect_.h = 56;
         SDL_RenderCopy(render_, text2, NULL, &rect_);
-    }else{
-        SDL_RenderCopy(render_, text2, NULL, &rect_);
-        dem = 0;
+        if(dem>20) dem=0;
     }
+
 }
 
 void Bird::Run()
 {
-    rect_.y+=y_val_;
+    rect_.y+= speed + 0.5*g;
+    speed += 0.1 * g;
+}
+
+void Bird::Rendertext3(SDL_Renderer* render_)
+{
+    rect_.w = 64;
+    rect_.h = 56;
+    SDL_RenderCopy(render_, text3, NULL, &rect_);
 }

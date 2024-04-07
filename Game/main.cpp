@@ -12,12 +12,14 @@ bool Init()
     if(window_ == NULL) return false;
     render_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if(render_ == NULL) return false;
+    if(Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) return false;
     return true;
 
 }
 
 void close()
 {
+    SDL_Delay(2000);
     bk_grd.Free();
     SDL_DestroyRenderer(render_);
     render_ = NULL;
@@ -28,20 +30,20 @@ void close()
     IMG_Quit();
     SDL_Quit();
 }
-
-bool Game_over(Bird bird_, ColumList columlist_)
-{
-    std::vector<DoubleColum*> colum_list = columlist_.GetList();
-    SDL_Rect flbird = bird_.GetRect();
-    for(int i=0; i<colum_list.size(); i++){
-        DoubleColum* cl = colum_list.at(i);
-        if(cl->CheckCollision(flbird)){
-            return true;
-        }
-    }
-    return false;
-
-}
+//
+//bool Game_over(Bird bird_, ColumList columlist_)
+//{
+//    std::vector<DoubleColum*> colum_list = columlist_.GetList();
+//    SDL_Rect flbird = bird_.GetRect();
+//    for(int i=0; i<colum_list.size(); i++){
+//        DoubleColum* cl = colum_list.at(i);
+//        if(cl->CheckCollision(flbird)){
+//            return true;
+//        }
+//    }
+//    return false;
+//
+//}
 
 int main(int argc, char* argv[])
 {
@@ -53,17 +55,21 @@ int main(int argc, char* argv[])
     Bird bird;
     ret = bird.loadImage(render_, "img//bird1.png");
     if(ret == false) return -1;
-    ret = bird.LoadBird(render_, "img//bird1.png", "img\bird2.png");
+    ret = bird.LoadBird(render_, "img//bird1.png", "img//bird2.png", "img//bird3.png");
     if(ret == false) return -1;
     ColumList colum_;
     ret = colum_.InitColumList(render_);
 //    DoubleColum colum;
 //    ret = colum.InitColum(render_, ppp);
     if(ret == false) return -1;
-
+//    Mix_Music *Music_nen = Mix_LoadMUS("nhacnen.mp3");
+//    if(Music_nen == nullptr) return -1;
     bird.SetRect(100, 100);
     bool quit=false;
-    while(!quit){
+    while(!quit && !colum_.Getdie()){
+//        if (Mix_PlayingMusic() == 0) {
+//            Mix_PlayMusic( Music_nen, -1 );
+//        }
         while (SDL_PollEvent(&event_) != 0)
         {
             if (event_.type == SDL_QUIT)
@@ -75,12 +81,16 @@ int main(int argc, char* argv[])
         }
         bk_grd.Render(render_);
         colum_.SetBird_rect(bird.GetRect());
-        colum_.ShowList(render_);
+
 //        colum.Move();
 //        colum.ShowDoubleColum(render_);
         bird.Run();
         bird.RenderBird(render_);
-        if(Game_over(bird, colum_)) quit=true;
+//        if(Game_over(bird, colum_)){
+//            bird.Rendertext3(render_);
+//            quit = true;
+//        }
+        colum_.ShowList(render_);
         SDL_RenderPresent(render_);
     }
     close();

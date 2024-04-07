@@ -28,6 +28,8 @@ private:
     Colum bottom_colum;
     int x_run;
     bool is_back_;
+    bool is_pass_;
+    SDL_Rect pass_rect;
 public:
     DoubleColum();
     bool InitColum(SDL_Renderer* render_, const int &xp);
@@ -38,6 +40,10 @@ public:
     bool Getisback_();
     void Setisback_(bool ib_);
     bool CheckCollision(const SDL_Rect &rect);
+    bool CheckPass(const SDL_Rect &rect);
+    bool Getispass() {return is_pass_;}
+    void Setispass(bool pass) {is_pass_ = pass;}
+    void SetPassrect();
 };
 
 class ColumList
@@ -46,12 +52,16 @@ private:
     std::vector<DoubleColum*> Colum_list;
     int end_list;
     SDL_Rect Bird_rect;
+    bool die;
+    SDL_Texture* Bird_die;
+    Mix_Music *music;
 public:
     ColumList();
     bool InitColumList(SDL_Renderer* render_);
     void ShowList(SDL_Renderer* render_);
     void SetBird_rect(SDL_Rect bird_rect);
     std::vector<DoubleColum*> GetList() {return Colum_list;}
+    bool Getdie() {return die;}
 };
 
 #endif // COLUM_H_INCLUDED
