@@ -2,6 +2,7 @@
 #include "BaseObject.h"
 #include "Bird.h"
 #include "Colum.h"
+#include "Text.h"
 
 BaseObject bk_grd;
 bool Init()
@@ -13,6 +14,7 @@ bool Init()
     render_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if(render_ == NULL) return false;
     if(Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) return false;
+    if(TTF_Init() == -1) return false;
     return true;
 }
 
@@ -25,6 +27,8 @@ void close()
     SDL_DestroyWindow(window_);
     window_ = NULL;
     IMG_Quit();
+    Mix_Quit();
+    TTF_Quit();
     SDL_Quit();
 }
 
@@ -42,20 +46,21 @@ int main(int argc, char* argv[])
     if(ret == false) return -1;
     ColumList colum_;
     ret = colum_.InitColumList(render_);
-
     if(ret == false) return -1;
+
+    Text text_score;
+    ret = text_score.loadFont("ARCADE.ttf", 40);
+    if(ret==false) return -1;
 
     bird.SetRect(100, 100);
     bool quit=false;
     while(!quit && !colum_.Getdie()){
-
         while (SDL_PollEvent(&event_) != 0)
         {
             if (event_.type == SDL_QUIT)
             {
                 quit = true;
             }
-
             bird.HandleInputAction(event_);
         }
         bk_grd.Render(render_);
@@ -67,6 +72,10 @@ int main(int argc, char* argv[])
         }else{
             bird.RenderBird(render_);
         }
+        int diem = colum_.Getscore();
+        std::string diemso = std::to_string(diem);
+        text_score.Settext(diemso.c_str());
+        text_score.renderTexture(render_, SCREEN_WIDTH/2, 2, 50, 50);
         SDL_RenderPresent(render_);
     }
     close();

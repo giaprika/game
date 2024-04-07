@@ -134,6 +134,7 @@ ColumList::ColumList()
     end_list=0;
     die = false;
     music = nullptr;
+    score = 0;
 }
 
 void DoubleColum::SetPassrect()
@@ -183,6 +184,14 @@ bool ColumList::InitColumList(SDL_Renderer* render_)
 
 void ColumList::ShowList(SDL_Renderer* render_)
 {
+    if(Bird_rect.y + Bird_rect.h <0 || Bird_rect.y > SCREEN_HEIGHT){
+        Mix_Chunk* gChunk = Mix_LoadWAV("out.wav");
+            if (gChunk != nullptr) {
+                Mix_PlayChannel( -1, gChunk, 0 );
+            }
+        Mix_PauseMusic();
+        die = true;
+    }
     if (Mix_PlayingMusic() == 0){
            Mix_PlayMusic( music, -1 );
     }
@@ -211,6 +220,7 @@ void ColumList::ShowList(SDL_Renderer* render_)
             if(cl->Getispass() == false){
                 Mix_Chunk* ting = Mix_LoadWAV("ting.wav");
                 if (ting != NULL)  Mix_PlayChannel(-1, ting, 0);
+                score++;
                 cl->Setispass(true);
             }
         }

@@ -46,16 +46,23 @@
 	"BaseObject.h"
 	"Define.h"
 
-1712479834 source:d:\gamegithub\game\game\colum.cpp
+1712499575 source:d:\gamegithub\game\game\colum.cpp
 	"BaseObject.h"
 	"Colum.h"
 
-1712478988 d:\gamegithub\game\game\colum.h
+1712497893 d:\gamegithub\game\game\colum.h
 	"BaseObject.h"
 
-1712479333 source:d:\gamegithub\game\game\main.cpp
+1712498512 source:d:\gamegithub\game\game\main.cpp
 	"Define.h"
 	"BaseObject.h"
 	"Bird.h"
 	"Colum.h"
+	"Text.h"
+
+1712498263 source:d:\gamegithub\game\game\text.cpp
+	"Text.h"
+
+1712498139 d:\gamegithub\game\game\text.h
+	"Define.h"
 

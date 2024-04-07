@@ -54,6 +54,7 @@ private:
     SDL_Rect Bird_rect;
     bool die;
     Mix_Music *music;
+    int score;
 public:
     ColumList();
     bool InitColumList(SDL_Renderer* render_);
@@ -61,6 +62,7 @@ public:
     void SetBird_rect(SDL_Rect bird_rect);
     std::vector<DoubleColum*> GetList() {return Colum_list;}
     bool Getdie() {return die;}
+    int Getscore() {return score;}
 };
 
 #endif // COLUM_H_INCLUDED
