@@ -39,18 +39,17 @@ bool Bird::LoadBird(SDL_Renderer* render_, std::string file1, std::string file2,
 
 void Bird::RenderBird(SDL_Renderer* render_)
 {
-    dem++;
-    if(dem<10){
-        rect_.w = 64;
-        rect_.h = 48;
-        SDL_RenderCopy(render_, text1, NULL, &rect_);
-    }else{
-        rect_.w = 64;
-        rect_.h = 56;
-        SDL_RenderCopy(render_, text2, NULL, &rect_);
-        if(dem>20) dem=0;
-    }
-
+        dem++;
+        if(dem<5){
+            rect_.w = 64;
+            rect_.h = 48;
+            SDL_RenderCopy(render_, text1, NULL, &rect_);
+        }else{
+            rect_.w = 64;
+            rect_.h = 56;
+            SDL_RenderCopy(render_, text2, NULL, &rect_);
+            if(dem>10) dem=0;
+        }
 }
 
 void Bird::Run()

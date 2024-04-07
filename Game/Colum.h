@@ -53,7 +53,6 @@ private:
     int end_list;
     SDL_Rect Bird_rect;
     bool die;
-    SDL_Texture* Bird_die;
     Mix_Music *music;
 public:
     ColumList();

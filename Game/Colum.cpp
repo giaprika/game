@@ -10,7 +10,7 @@ Colum::Colum()
 }
 Colum::~Colum()
 {
-
+    this->Free();
 }
 
 bool Colum::LoadColum(SDL_Renderer* render_, std::string file_name)
@@ -66,21 +66,11 @@ bool DoubleColum::InitColum(SDL_Renderer* render_, const int &xp)
 {
     bool ret1= top_colum.LoadColum(render_, "img//top_colum.png");
     bool ret2= bottom_colum.LoadColum(render_, "img//bottom_colum.png");
+
     int topx = -520 + rand()%311 + 70;
-    int bottomx = topx + 520 + 130 + rand()%31;
+    int bottomx = topx + 520 + 150 + rand()%21;
     top_colum.SetPos(xp, topx);
     bottom_colum.SetPos(xp, bottomx);
-
-//    SDL_Rect top = top_colum.GetRectColum();
-//    SDL_Rect bottom = bottom_colum.GetRectColum();
-//    pass_rect.x = top.x+top.w;
-//    pass_rect.y = (top.y+top.h);
-//    pass_rect.w = 10;
-//    pass_rect.h = bottom.y - (top.y + top.h);
-//    pass_rect.x = 100;
-//    pass_rect.y = 100;
-//    pass_rect.w = 5;
-//    pass_rect.h = 100;
 
     if(ret1 && ret2) return true;
     else return false;
@@ -143,7 +133,6 @@ ColumList::ColumList()
 {
     end_list=0;
     die = false;
-    Bird_die = NULL;
     music = nullptr;
 }
 
@@ -159,8 +148,6 @@ void DoubleColum::SetPassrect()
 
 bool ColumList::InitColumList(SDL_Renderer* render_)
 {
-    Bird_die = IMG_LoadTexture(render_, "img//bird3.png");
-    if(Bird_die == NULL) return false;
     music = Mix_LoadMUS("nhacnen.mp3");
     if(music == nullptr) return false;
 
@@ -192,12 +179,10 @@ bool ColumList::InitColumList(SDL_Renderer* render_)
 
     if(ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7) return true;
     else return false;
-
 }
 
 void ColumList::ShowList(SDL_Renderer* render_)
 {
-//    Colum_list[0].ShowDoubleColum(render_);
     if (Mix_PlayingMusic() == 0){
            Mix_PlayMusic( music, -1 );
     }
@@ -215,9 +200,6 @@ void ColumList::ShowList(SDL_Renderer* render_)
             end_list = i;
         }
         if(cl->CheckCollision(Bird_rect)){
-            Bird_rect.w = 64;
-            Bird_rect.h = 56;
-            SDL_RenderCopy(render_, Bird_die, NULL, &Bird_rect);
             Mix_Chunk* gChunk = Mix_LoadWAV("collide.wav");
             if (gChunk != nullptr) {
                 Mix_PlayChannel( -1, gChunk, 0 );
@@ -231,9 +213,7 @@ void ColumList::ShowList(SDL_Renderer* render_)
                 if (ting != NULL)  Mix_PlayChannel(-1, ting, 0);
                 cl->Setispass(true);
             }
-
         }
-
         cl->ShowDoubleColum(render_);
     }
 }

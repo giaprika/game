@@ -14,7 +14,6 @@ bool Init()
     if(render_ == NULL) return false;
     if(Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) return false;
     return true;
-
 }
 
 void close()
@@ -23,27 +22,11 @@ void close()
     bk_grd.Free();
     SDL_DestroyRenderer(render_);
     render_ = NULL;
-
     SDL_DestroyWindow(window_);
     window_ = NULL;
-
     IMG_Quit();
     SDL_Quit();
 }
-//
-//bool Game_over(Bird bird_, ColumList columlist_)
-//{
-//    std::vector<DoubleColum*> colum_list = columlist_.GetList();
-//    SDL_Rect flbird = bird_.GetRect();
-//    for(int i=0; i<colum_list.size(); i++){
-//        DoubleColum* cl = colum_list.at(i);
-//        if(cl->CheckCollision(flbird)){
-//            return true;
-//        }
-//    }
-//    return false;
-//
-//}
 
 int main(int argc, char* argv[])
 {
@@ -59,17 +42,13 @@ int main(int argc, char* argv[])
     if(ret == false) return -1;
     ColumList colum_;
     ret = colum_.InitColumList(render_);
-//    DoubleColum colum;
-//    ret = colum.InitColum(render_, ppp);
+
     if(ret == false) return -1;
-//    Mix_Music *Music_nen = Mix_LoadMUS("nhacnen.mp3");
-//    if(Music_nen == nullptr) return -1;
+
     bird.SetRect(100, 100);
     bool quit=false;
     while(!quit && !colum_.Getdie()){
-//        if (Mix_PlayingMusic() == 0) {
-//            Mix_PlayMusic( Music_nen, -1 );
-//        }
+
         while (SDL_PollEvent(&event_) != 0)
         {
             if (event_.type == SDL_QUIT)
@@ -80,17 +59,14 @@ int main(int argc, char* argv[])
             bird.HandleInputAction(event_);
         }
         bk_grd.Render(render_);
-        colum_.SetBird_rect(bird.GetRect());
-
-//        colum.Move();
-//        colum.ShowDoubleColum(render_);
         bird.Run();
-        bird.RenderBird(render_);
-//        if(Game_over(bird, colum_)){
-//            bird.Rendertext3(render_);
-//            quit = true;
-//        }
+        colum_.SetBird_rect(bird.GetRect());
         colum_.ShowList(render_);
+        if(colum_.Getdie()){
+            bird.Rendertext3(render_);
+        }else{
+            bird.RenderBird(render_);
+        }
         SDL_RenderPresent(render_);
     }
     close();
