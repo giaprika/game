@@ -30,6 +30,7 @@ private:
     bool is_back_;
     bool is_pass_;
     SDL_Rect pass_rect;
+    int collide;
 public:
     DoubleColum();
     bool InitColum(SDL_Renderer* render_, const int &xp);
@@ -44,6 +45,8 @@ public:
     bool Getispass() {return is_pass_;}
     void Setispass(bool pass) {is_pass_ = pass;}
     void SetPassrect();
+    SDL_Rect GetPassrect() {return pass_rect;} /*    */
+    int Getcollide() {return collide;}
 };
 
 class ColumList
@@ -55,6 +58,8 @@ private:
     bool die;
     Mix_Music *music;
     int score;
+    bool saved_;
+
 public:
     ColumList();
     bool InitColumList(SDL_Renderer* render_);
@@ -63,6 +68,23 @@ public:
     std::vector<DoubleColum*> GetList() {return Colum_list;}
     bool Getdie() {return die;}
     int Getscore() {return score;}
+    void Setsaved_(bool saved) {saved_ = saved;}
+    bool Getsaved_(){return saved_;}
+    SDL_Rect GetBird_rect() {return Bird_rect;}
+};
+
+class Save : BaseObject
+{
+private:
+    bool is_looted;
+public:
+    Save();
+    bool LoadSave(SDL_Renderer* render_, std::string filename);
+    void ShowSave(SDL_Renderer* render_);
+    void SetRectSave (SDL_Rect rect) {this->rect_ = rect;}
+    void SaveMove() {this->rect_.x -= 3;}
+    bool GetIs_Looted() {return is_looted;}
+    void SetIs_Looted(bool loot) {is_looted = loot;}
 };
 
 #endif // COLUM_H_INCLUDED

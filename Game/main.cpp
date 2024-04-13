@@ -52,6 +52,10 @@ int main(int argc, char* argv[])
     ret = text_score.loadFont("ARCADE.ttf", 40);
     if(ret==false) return -1;
 
+    Save Mangbv;
+    ret = Mangbv.LoadSave(render_, "save.png");
+    if (ret == false) return -1;
+
     bird.SetRect(100, 100);
     bool quit=false;
     while(!quit && !colum_.Getdie()){
@@ -65,17 +69,50 @@ int main(int argc, char* argv[])
         }
         bk_grd.Render(render_);
         bird.Run();
+
         colum_.SetBird_rect(bird.GetRect());
+        colum_.Setsaved_(bird.GetIs_saved());
         colum_.ShowList(render_);
+        bird.SetIs_saved(colum_.Getsaved_());
+        bird.SetRect_(colum_.GetBird_rect().x, colum_.GetBird_rect().y);
         if(colum_.Getdie()){
             bird.Rendertext3(render_);
         }else{
             bird.RenderBird(render_);
         }
+
         int diem = colum_.Getscore();
         std::string diemso = std::to_string(diem);
         text_score.Settext(diemso.c_str());
         text_score.renderTexture(render_, SCREEN_WIDTH/2, 2, 50, 50);
+
+        if(diem >= 2){
+            SDL_Rect rectsave;
+            SDL_Rect birdrect = bird.GetRect();
+            if(!Mangbv.GetIs_Looted()){
+                std::vector<DoubleColum*> listcolum = colum_.GetList();
+                rectsave = listcolum.at(6)->GetPassrect();
+                rectsave = {rectsave.x-128, rectsave.y + 40, 70, 60};
+                if(SDL_HasIntersection(&rectsave, &birdrect)){
+                    Mix_Chunk* gChunk = Mix_LoadWAV("vobong.wav");
+                    if(gChunk != nullptr){
+                        Mix_PlayChannel(-1, gChunk, 0);
+                    }
+                    Mangbv.SetIs_Looted(true);
+                    bird.SetIs_saved(true);
+                }
+                Mangbv.SetRectSave(rectsave);
+                Mangbv.ShowSave(render_);
+            }
+            else if(bird.GetIs_saved()){
+
+                rectsave = {birdrect.x - 5, birdrect.y - 10, 80, 75};
+                Mangbv.SetRectSave(rectsave);
+                Mangbv.ShowSave(render_);
+            }
+            Mangbv.SetIs_Looted(bird.GetIs_saved());
+        }
+
         SDL_RenderPresent(render_);
     }
     close();

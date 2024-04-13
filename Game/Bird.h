@@ -11,6 +11,7 @@ private:
     const int g = 9;
     int speed;
     int dem;
+    bool is_saved;
 public:
     Bird();
     ~Bird();
@@ -19,6 +20,9 @@ public:
     void RenderBird(SDL_Renderer* render_);
     void Run();
     void Rendertext3(SDL_Renderer* render_);
+    bool GetIs_saved() {return is_saved;}
+    void SetIs_saved(bool saved) {is_saved = saved;}
+    void SetRect_(const int &x, const int &y);
 };
 
 #endif // BIRD_H_INCLUDED

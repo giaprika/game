@@ -7,6 +7,7 @@ Bird::Bird()
     text2 = NULL;
     text3 = NULL;
     dem=0;
+    is_saved = false;
 }
 Bird::~Bird()
 {
@@ -63,4 +64,9 @@ void Bird::Rendertext3(SDL_Renderer* render_)
     rect_.w = 64;
     rect_.h = 56;
     SDL_RenderCopy(render_, text3, NULL, &rect_);
+}
+
+void Bird::SetRect_(const int &x, const int &y)
+{
+    this->SetRect(x, y);
 }

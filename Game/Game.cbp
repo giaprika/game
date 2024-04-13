@@ -39,6 +39,8 @@
 		<Unit filename="Colum.cpp" />
 		<Unit filename="Colum.h" />
 		<Unit filename="Define.h" />
+		<Unit filename="Text.cpp" />
+		<Unit filename="Text.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
