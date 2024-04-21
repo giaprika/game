@@ -20,7 +20,6 @@ bool Init()
 
 void close()
 {
-    SDL_Delay(2000);
     bk_grd.Free();
     SDL_DestroyRenderer(render_);
     render_ = NULL;
@@ -124,7 +123,7 @@ again_label:
         SDL_RenderPresent(render_);
 
         if(colum_.Getdie()){
-            SDL_Delay(500);
+            SDL_Delay(2000);
             std::string score = "Score: " + diemso;
             int ret_menu = menu.ShowMenu(render_, "Play Again", "Exit", score.c_str());
             if(ret_menu == -1){

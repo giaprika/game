@@ -46,6 +46,8 @@ int Menu::ShowMenu(SDL_Renderer* render_, const char* text1_, const char* text2_
     text2.Settext(text2_);
     text3.Settext(text3_);
 
+    text3.SettextColor(0, 255, 255);
+
     this->Render(render_);
     int x=0;
     int y=0;
