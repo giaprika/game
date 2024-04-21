@@ -36,6 +36,13 @@ int main(int argc, char* argv[])
 {
     srand(time(NULL));
     if(Init() == false) return -1;
+    bool quit=false;
+    Menu menu;
+    int ret_menu = menu.ShowMenu(render_, "Play Game", "Exit", "");
+    if(ret_menu == -1){
+        quit=true;
+    }
+again_label:
     bool ret = bk_grd.loadImage(render_, "img//bk_ground.jpg");
     if(ret == false) return -1;
 
@@ -57,7 +64,7 @@ int main(int argc, char* argv[])
     if (ret == false) return -1;
 
     bird.SetRect(100, 100);
-    bool quit=false;
+
     while(!quit && !colum_.Getdie()){
         while (SDL_PollEvent(&event_) != 0)
         {
@@ -75,6 +82,7 @@ int main(int argc, char* argv[])
         colum_.ShowList(render_);
         bird.SetIs_saved(colum_.Getsaved_());
         bird.SetRect_(colum_.GetBird_rect().x, colum_.GetBird_rect().y);
+
         if(colum_.Getdie()){
             bird.Rendertext3(render_);
         }else{
@@ -92,7 +100,7 @@ int main(int argc, char* argv[])
             if(!Mangbv.GetIs_Looted()){
                 std::vector<DoubleColum*> listcolum = colum_.GetList();
                 rectsave = listcolum.at(6)->GetPassrect();
-                rectsave = {rectsave.x-128, rectsave.y + 40, 70, 60};
+                rectsave = {rectsave.x-128, rectsave.y + 40, 70, 70};
                 if(SDL_HasIntersection(&rectsave, &birdrect)){
                     Mix_Chunk* gChunk = Mix_LoadWAV("vobong.wav");
                     if(gChunk != nullptr){
@@ -106,7 +114,7 @@ int main(int argc, char* argv[])
             }
             else if(bird.GetIs_saved()){
 
-                rectsave = {birdrect.x - 5, birdrect.y - 10, 80, 75};
+                rectsave = {birdrect.x - 10, birdrect.y - 20, 90, 85};
                 Mangbv.SetRectSave(rectsave);
                 Mangbv.ShowSave(render_);
             }
@@ -114,6 +122,19 @@ int main(int argc, char* argv[])
         }
 
         SDL_RenderPresent(render_);
+
+        if(colum_.Getdie()){
+            SDL_Delay(500);
+            std::string score = "Score: " + diemso;
+            int ret_menu = menu.ShowMenu(render_, "Play Again", "Exit", score.c_str());
+            if(ret_menu == -1){
+                quit = true;
+                continue;
+            }
+            if(ret_menu == 1){
+                goto again_label;
+            }
+        }
     }
     close();
 }

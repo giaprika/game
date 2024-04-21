@@ -232,7 +232,7 @@ void ColumList::ShowList(SDL_Renderer* render_)
                 if (gChunk != nullptr) {
                     Mix_PlayChannel( -1, gChunk, 0 );
                 }
-                Mix_PauseMusic();
+                Mix_FreeMusic(music);
             }
         }
         if(cl->CheckPass(Bird_rect)){

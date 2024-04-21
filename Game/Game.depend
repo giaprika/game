@@ -25,7 +25,7 @@
 1711555869 d:\game\bird.h
 	"BaseObject.h"
 
-1712968843 source:d:\gamegithub\game\game\bird.cpp
+1712978134 source:d:\gamegithub\game\game\bird.cpp
 	"Bird.h"
 
 1712968843 d:\gamegithub\game\game\bird.h
@@ -46,23 +46,24 @@
 	"BaseObject.h"
 	"Define.h"
 
-1712970346 source:d:\gamegithub\game\game\colum.cpp
+1713713795 source:d:\gamegithub\game\game\colum.cpp
 	"BaseObject.h"
 	"Colum.h"
 
-1712975126 d:\gamegithub\game\game\colum.h
+1712979212 d:\gamegithub\game\game\colum.h
 	"BaseObject.h"
 
-1712976078 source:d:\gamegithub\game\game\main.cpp
+1713714003 source:d:\gamegithub\game\game\main.cpp
 	"Define.h"
 	"BaseObject.h"
 	"Bird.h"
 	"Colum.h"
 	"Text.h"
 
-1712540318 source:d:\gamegithub\game\game\text.cpp
+1713713148 source:d:\gamegithub\game\game\text.cpp
 	"Text.h"
 
-1712498139 d:\gamegithub\game\game\text.h
+1713712559 d:\gamegithub\game\game\text.h
 	"Define.h"
+	"BaseObject.h"
 
