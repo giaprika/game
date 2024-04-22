@@ -30,7 +30,6 @@ private:
     bool is_back_;
     bool is_pass_;
     SDL_Rect pass_rect;
-    int collide;
 public:
     DoubleColum();
     bool InitColum(SDL_Renderer* render_, const int &xp);
@@ -45,8 +44,7 @@ public:
     bool Getispass() {return is_pass_;}
     void Setispass(bool pass) {is_pass_ = pass;}
     void SetPassrect();
-    SDL_Rect GetPassrect() {return pass_rect;} /*    */
-    int Getcollide() {return collide;}
+    SDL_Rect GetPassrect() {return pass_rect;}
 };
 
 class ColumList

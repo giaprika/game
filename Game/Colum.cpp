@@ -60,7 +60,6 @@ DoubleColum::DoubleColum()
     x_run = -3;
     is_back_ = false;
     is_pass_ = false;
-    collide = 0;
 }
 
 bool DoubleColum::InitColum(SDL_Renderer* render_, const int &xp)
@@ -121,8 +120,6 @@ bool DoubleColum::CheckCollision(const SDL_Rect &rect)
     SDL_Rect rect2 = bottom_colum.GetRectColum();
     bool ret1 = SDL_HasIntersection(&rect1, &rect);
     bool ret2 = SDL_HasIntersection(&rect2, &rect);
-    if(ret1) collide = 1;
-    if(ret2) collide = 2;
     return (ret1 || ret2);
 }
 
@@ -224,8 +221,8 @@ void ColumList::ShowList(SDL_Renderer* render_)
                 if(gChunk != nullptr){
                     Mix_PlayChannel(-1, gChunk, 0);
                 }
-                if(cl->Getcollide() == 1) Bird_rect.y += 30;
-                if(cl->Getcollide() == 2) Bird_rect.y -= 30;
+                SDL_Rect res = cl->GetPassrect();
+                Bird_rect.y = res.y + 50;
                 saved_ = false;
             }else{
                 die = true;

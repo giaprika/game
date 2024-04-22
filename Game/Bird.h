@@ -8,8 +8,8 @@ private:
     SDL_Texture* text1;
     SDL_Texture* text2;
     SDL_Texture* text3;
-    const int g = 9;
-    int speed;
+    const double g = 0.5;
+    double speed;
     int dem;
     bool is_saved;
 public:

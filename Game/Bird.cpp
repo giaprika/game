@@ -2,7 +2,7 @@
 
 Bird::Bird()
 {
-    speed = 2;
+    speed = 0;
     text1 = NULL;
     text2 = NULL;
     text3 = NULL;
@@ -19,13 +19,13 @@ void Bird::HandleInputAction(SDL_Event events)
   if( events.type == SDL_KEYDOWN )
   {
       if(events.key.keysym.sym == SDLK_UP || events.key.keysym.sym == SDLK_SPACE){
-            speed = -15;
+            speed = -8;
       }
   }
   else if( events.type == SDL_KEYUP )
   {
       if(events.key.keysym.sym == SDLK_UP || events.key.keysym.sym == SDLK_SPACE){
-            speed = 1;
+            speed = 0;
       }
   }
 }
@@ -56,7 +56,7 @@ void Bird::RenderBird(SDL_Renderer* render_)
 void Bird::Run()
 {
     rect_.y+= speed + 0.5*g;
-    speed += 0.1 * g;
+    speed += 0.5*g;
 }
 
 void Bird::Rendertext3(SDL_Renderer* render_)

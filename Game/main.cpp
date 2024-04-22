@@ -37,12 +37,12 @@ int main(int argc, char* argv[])
     if(Init() == false) return -1;
     bool quit=false;
     Menu menu;
-    int ret_menu = menu.ShowMenu(render_, "Play Game", "Exit", "");
+    int ret_menu = menu.ShowMenu(render_, "Play Game", "Exit", "", "Flappy Bird");
     if(ret_menu == -1){
         quit=true;
     }
-    Bird bird;
 again_label:
+    Bird bird;
     if(ret_menu != -1)
         ret_menu = menu.ChooseBird(render_, "Bird 1", "Bird 2", "Exit");
     if(ret_menu == -1){
@@ -132,7 +132,7 @@ again_label:
         if(colum_.Getdie()){
             SDL_Delay(2000);
             std::string score = "Score: " + diemso;
-            int ret_menu = menu.ShowMenu(render_, "Play Again", "Exit", score.c_str());
+            int ret_menu = menu.ShowMenu(render_, "Play Again", "Exit", score.c_str(), "Game Over");
             if(ret_menu == -1){
                 quit = true;
                 continue;
