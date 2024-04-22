@@ -1,4 +1,4 @@
-#include "Text.h"
+#include "Menu&Score.h"
 
 Text::Text()
 {
@@ -32,6 +32,13 @@ void Text::SettextColor(int r_, int g_, int b_)
     textColor.r = r_;
     textColor.g = g_;
     textColor.b = b_;
+}
+
+void Text::RenderRectScore(SDL_Renderer* render_)
+{
+    SDL_SetRenderDrawColor(render_, 0, 0, 0, 0xFF);
+    SDL_Rect rect_score = {0, 0, SCREEN_WIDTH, 40};
+    SDL_RenderFillRect(render_, &rect_score);
 }
 
 int Menu::ShowMenu(SDL_Renderer* render_, const char* text1_, const char* text2_, const char* text3_)
@@ -164,3 +171,5 @@ int Menu::ChooseBird(SDL_Renderer* render_, const char* text1_, const char* text
         SDL_RenderPresent(render_);
     }
 }
+
+

@@ -14,10 +14,10 @@ private:
 public:
     Text();
     bool loadFont(const char* path, int size);
-    bool loadTexture(SDL_Renderer* render_);
     void renderTexture(SDL_Renderer* render_, int x_, int y_, int w_, int h_);
     void Settext(const char* path) {text = path;}
     void SettextColor(int r_, int g_, int b_);
+    void RenderRectScore(SDL_Renderer* render_);
 };
 
 class Menu : BaseObject

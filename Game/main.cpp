@@ -2,7 +2,7 @@
 #include "BaseObject.h"
 #include "Bird.h"
 #include "Colum.h"
-#include "Text.h"
+#include "Menu&Score.h"
 
 BaseObject bk_grd;
 bool Init()
@@ -43,7 +43,8 @@ int main(int argc, char* argv[])
     }
     Bird bird;
 again_label:
-    ret_menu = menu.ChooseBird(render_, "Bird 1", "Bird 2", "Exit");
+    if(ret_menu != -1)
+        ret_menu = menu.ChooseBird(render_, "Bird 1", "Bird 2", "Exit");
     if(ret_menu == -1){
         quit=true;
     }
@@ -95,6 +96,7 @@ again_label:
             bird.RenderBird(render_);
         }
 
+        text_score.RenderRectScore(render_);
         int diem = colum_.Getscore();
         std::string diemso = std::to_string(diem);
         text_score.Settext(diemso.c_str());
