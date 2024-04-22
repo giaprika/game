@@ -9,7 +9,7 @@ bool Init()
 {
     int ret = SDL_Init(SDL_INIT_EVERYTHING);
     if (ret < 0) return false;
-    window_ = SDL_CreateWindow("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    window_ = SDL_CreateWindow("Plappy Bird", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if(window_ == NULL) return false;
     render_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if(render_ == NULL) return false;
@@ -41,17 +41,26 @@ int main(int argc, char* argv[])
     if(ret_menu == -1){
         quit=true;
     }
-again_label:
-    bool ret = bk_grd.loadImage(render_, "img//bk_ground.jpg");
-    if(ret == false) return -1;
-
     Bird bird;
-    ret = bird.loadImage(render_, "img//bird1.png");
-    if(ret == false) return -1;
-    ret = bird.LoadBird(render_, "img//bird1.png", "img//bird2.png", "img//bird3.png");
-    if(ret == false) return -1;
+again_label:
+    ret_menu = menu.ChooseBird(render_, "Bird 1", "Bird 2", "Exit");
+    if(ret_menu == -1){
+        quit=true;
+    }
+    bool ret1, ret2;
+    if(ret_menu == 1){
+        ret1 = bk_grd.loadImage(render_, "img//bk_ground1.jpg");
+        ret2 = bird.LoadBird(render_, "img//bird1_1.png", "img//bird1_2.png", "img//bird1_3.png");
+    }
+    if(ret_menu == 2){
+        ret1 = bk_grd.loadImage(render_, "img//bk_ground2.png");
+        ret2 = bird.LoadBird(render_, "img//bird2_1.png", "img//bird2_2.png", "img//bird2_3.png");
+    }
+    if(!ret1 || !ret2) return -1;
+    bird.SetRect(100, 100);
+
     ColumList colum_;
-    ret = colum_.InitColumList(render_);
+    bool ret = colum_.InitColumList(render_);
     if(ret == false) return -1;
 
     Text text_score;
@@ -59,10 +68,8 @@ again_label:
     if(ret==false) return -1;
 
     Save Mangbv;
-    ret = Mangbv.LoadSave(render_, "save.png");
+    ret = Mangbv.LoadSave(render_, "img//save.png");
     if (ret == false) return -1;
-
-    bird.SetRect(100, 100);
 
     while(!quit && !colum_.Getdie()){
         while (SDL_PollEvent(&event_) != 0)
@@ -119,9 +126,7 @@ again_label:
             }
             Mangbv.SetIs_Looted(bird.GetIs_saved());
         }
-
         SDL_RenderPresent(render_);
-
         if(colum_.Getdie()){
             SDL_Delay(2000);
             std::string score = "Score: " + diemso;

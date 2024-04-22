@@ -189,16 +189,17 @@ bool ColumList::InitColumList(SDL_Renderer* render_)
 
 void ColumList::ShowList(SDL_Renderer* render_)
 {
+    if (Mix_PlayingMusic() == 0){
+           Mix_PlayMusic( music, -1 );
+    }
     if(Bird_rect.y + Bird_rect.h <0 || Bird_rect.y > SCREEN_HEIGHT){
+        Mix_FreeMusic(music);
         Mix_Chunk* gChunk = Mix_LoadWAV("out.wav");
             if (gChunk != nullptr) {
                 Mix_PlayChannel( -1, gChunk, 0 );
             }
         Mix_PauseMusic();
         die = true;
-    }
-    if (Mix_PlayingMusic() == 0){
-           Mix_PlayMusic( music, -1 );
     }
 
     for(int i=0; i<Colum_list.size(); i++){
@@ -209,7 +210,7 @@ void ColumList::ShowList(SDL_Renderer* render_)
         if(cl->Getisback_()){
             DoubleColum* endcl = Colum_list.at(end_list);
             SDL_Rect end_rect = endcl->GetTopRect();
-            int xp = end_rect.x + rand()%70 + 180;
+            int xp = end_rect.x + rand()%20 + 230;
             cl->SetX(xp);
             cl->Setisback_(false);
             cl->Setispass(false);

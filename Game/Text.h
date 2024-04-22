@@ -28,6 +28,7 @@ private:
     Text text3;
 public:
     int ShowMenu(SDL_Renderer* render_, const char* text1_, const char* text2_, const char* text3_);
+    int ChooseBird(SDL_Renderer* render_, const char* text1_, const char* text2_, const char* text3_);
 };
 
 #endif // TEXT_H_INCLUDED
