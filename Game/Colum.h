@@ -65,6 +65,7 @@ public:
     void SetBird_rect(SDL_Rect bird_rect);
     std::vector<DoubleColum*> GetList() {return Colum_list;}
     bool Getdie() {return die;}
+    void Setdie(bool die_) {die = die_;}
     int Getscore() {return score;}
     void Setsaved_(bool saved) {saved_ = saved;}
     bool Getsaved_(){return saved_;}
@@ -72,6 +73,7 @@ public:
     void waitUntilKeyPressed();
     void pauseMusic() { Mix_PauseMusic(); }
     void resumeMusic() { Mix_ResumeMusic(); }
+    void freeMusic() { Mix_FreeMusic(music); }
 };
 
 class Save : BaseObject
