@@ -161,7 +161,7 @@ void DoubleColum::SetPassrect()
 
 bool ColumList::InitColumList(SDL_Renderer* render_)
 {
-    music = Mix_LoadMUS("nhacnen.mp3");
+    music = Mix_LoadMUS("sound//nhacnen.mp3");
     if(music == nullptr) return false;
 
 
@@ -202,7 +202,7 @@ void ColumList::ShowList(SDL_Renderer* render_)
     }
     if(Bird_rect.y + Bird_rect.h <0 || Bird_rect.y > SCREEN_HEIGHT){
         Mix_FreeMusic(music);
-        Mix_Chunk* gChunk = Mix_LoadWAV("out.wav");
+        Mix_Chunk* gChunk = Mix_LoadWAV("sound//out.wav");
             if (gChunk != nullptr) {
                 Mix_PlayChannel( -1, gChunk, 0 );
             }
@@ -227,7 +227,7 @@ void ColumList::ShowList(SDL_Renderer* render_)
         if(cl->CheckCollision(MinRectBird)){
 
             if(saved_){
-                Mix_Chunk* gChunk = Mix_LoadWAV("vobong.wav");
+                Mix_Chunk* gChunk = Mix_LoadWAV("sound//vobong.wav");
                 if(gChunk != nullptr){
                     Mix_PlayChannel(-1, gChunk, 0);
                 }
@@ -237,7 +237,7 @@ void ColumList::ShowList(SDL_Renderer* render_)
                 saved_ = false;
             }else{
                 die = true;
-                Mix_Chunk* gChunk = Mix_LoadWAV("collide.wav");
+                Mix_Chunk* gChunk = Mix_LoadWAV("sound//collide.wav");
                 if (gChunk != nullptr) {
                     Mix_PlayChannel( -1, gChunk, 0 );
                 }
@@ -246,7 +246,7 @@ void ColumList::ShowList(SDL_Renderer* render_)
         }
         if(cl->CheckPass(Bird_rect)){
             if(cl->Getispass() == false){
-                Mix_Chunk* ting = Mix_LoadWAV("ting.wav");
+                Mix_Chunk* ting = Mix_LoadWAV("sound//ting.wav");
                 if (ting != NULL)  Mix_PlayChannel(-1, ting, 0);
                 score++;
                 cl->Setispass(true);
