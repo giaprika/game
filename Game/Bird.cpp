@@ -16,18 +16,20 @@ Bird::~Bird()
 
 void Bird::HandleInputAction(SDL_Event events)
 {
-  if( events.type == SDL_KEYDOWN )
-  {
-      if(events.key.keysym.sym == SDLK_UP || events.key.keysym.sym == SDLK_SPACE){
-            speed = -8;
-      }
-  }
-  else if( events.type == SDL_KEYUP )
-  {
-      if(events.key.keysym.sym == SDLK_UP || events.key.keysym.sym == SDLK_SPACE){
-            speed = 0;
-      }
-  }
+    if(!is_paused){
+          if( events.type == SDL_KEYDOWN )
+          {
+              if(events.key.keysym.sym == SDLK_UP ){
+                    speed = -8;
+              }
+          }
+          else if( events.type == SDL_KEYUP )
+          {
+              if(events.key.keysym.sym == SDLK_UP ){
+                    speed = 0;
+              }
+          }
+    }
 }
 
 bool Bird::LoadBird(SDL_Renderer* render_, std::string file1, std::string file2, std::string file3)
@@ -55,8 +57,10 @@ void Bird::RenderBird(SDL_Renderer* render_)
 
 void Bird::Run()
 {
-    rect_.y+= speed + 0.5*g;
-    speed += 0.5*g;
+    if(!is_paused){
+        rect_.y+= speed + 0.5*g;
+        speed += 0.5*g;
+    }
 }
 
 void Bird::Rendertext3(SDL_Renderer* render_)

@@ -41,8 +41,10 @@ SDL_Rect Colum::GetRectColum() const
 
 void Colum::Run(int x_val)
 {
-    rect_.x += x_val;
-    if(rect_.x + rect_.w < 0) is_back = true;
+    if(!is_paused){
+        rect_.x += x_val;
+        if(rect_.x + rect_.w < 0) is_back = true;
+    }
 }
 
 bool Colum::Getisback()
@@ -67,10 +69,10 @@ bool DoubleColum::InitColum(SDL_Renderer* render_, const int &xp)
     bool ret1= top_colum.LoadColum(render_, "img//top_colum.png");
     bool ret2= bottom_colum.LoadColum(render_, "img//bottom_colum.png");
 
-    int topx = -520 + rand()%311 + 70;
-    int bottomx = topx + 520 + 150 + rand()%21;
-    top_colum.SetPos(xp, topx);
-    bottom_colum.SetPos(xp, bottomx);
+    int topy = -520 + rand()%311 + 70;
+    int bottomy = topy + 520 + 150 + rand()%21;
+    top_colum.SetPos(xp, topy);
+    bottom_colum.SetPos(xp, bottomy);
 
     if(ret1 && ret2) return true;
     else return false;
@@ -148,6 +150,15 @@ void DoubleColum::SetPassrect()
     pass_rect.h = bottom.y - (top.y + top.h);
 }
 
+//void ColumList::waitUntilKeyPressed()
+//{
+//    while (true) {
+//        if ( SDL_PollEvent(&event_) != 0 && (event_.type == SDL_KEYDOWN || event_.type == SDL_QUIT) )
+//            return;
+//        SDL_Delay(100);
+//    }
+//}
+
 bool ColumList::InitColumList(SDL_Renderer* render_)
 {
     music = Mix_LoadMUS("nhacnen.mp3");
@@ -195,7 +206,6 @@ void ColumList::ShowList(SDL_Renderer* render_)
             if (gChunk != nullptr) {
                 Mix_PlayChannel( -1, gChunk, 0 );
             }
-        Mix_PauseMusic();
         die = true;
     }
 
@@ -223,6 +233,7 @@ void ColumList::ShowList(SDL_Renderer* render_)
                 }
                 SDL_Rect res = cl->GetPassrect();
                 Bird_rect.y = res.y + 50;
+//                waitUntilKeyPressed();
                 saved_ = false;
             }else{
                 die = true;
@@ -254,6 +265,7 @@ Save::Save()
 {
     is_looted = false;
 }
+
 
 bool Save::LoadSave(SDL_Renderer* render_, std::string filename)
 {

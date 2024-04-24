@@ -31,6 +31,7 @@ void close()
     SDL_Quit();
 }
 
+
 int main(int argc, char* argv[])
 {
     srand(time(NULL));
@@ -42,6 +43,7 @@ int main(int argc, char* argv[])
         quit=true;
     }
 again_label:
+    Pause pause;
     Bird bird;
     if(ret_menu != -1)
         ret_menu = menu.ChooseBird(render_, "Bird 1", "Bird 2", "Exit");
@@ -79,6 +81,10 @@ again_label:
             {
                 quit = true;
             }
+            if(event_.type == SDL_KEYDOWN)
+                if(event_.key.keysym.sym == SDLK_SPACE){
+                        is_paused = true;
+                }
             bird.HandleInputAction(event_);
         }
         bk_grd.Render(render_);
@@ -127,6 +133,15 @@ again_label:
                 Mangbv.ShowSave(render_);
             }
             Mangbv.SetIs_Looted(bird.GetIs_saved());
+        }
+        if(is_paused){
+            colum_.pauseMusic();
+            int ret_pause = pause.RenderPause(render_);
+            if(ret_pause == 1){
+                is_paused = false;
+                colum_.resumeMusic();
+            }
+            if(ret_pause == -1) quit = true;
         }
         SDL_RenderPresent(render_);
         if(colum_.Getdie()){

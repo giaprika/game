@@ -69,6 +69,9 @@ public:
     void Setsaved_(bool saved) {saved_ = saved;}
     bool Getsaved_(){return saved_;}
     SDL_Rect GetBird_rect() {return Bird_rect;}
+    void waitUntilKeyPressed();
+    void pauseMusic() { Mix_PauseMusic(); }
+    void resumeMusic() { Mix_ResumeMusic(); }
 };
 
 class Save : BaseObject
@@ -83,6 +86,7 @@ public:
     void SaveMove() {this->rect_.x -= 3;}
     bool GetIs_Looted() {return is_looted;}
     void SetIs_Looted(bool loot) {is_looted = loot;}
+
 };
 
 #endif // COLUM_H_INCLUDED

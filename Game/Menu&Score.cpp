@@ -140,10 +140,10 @@ int Menu::ChooseBird(SDL_Renderer* render_, const char* text1_, const char* text
                 x = event_.motion.x;
                 y = event_.motion.y;
                 if(x>=200 && x<=500 && y>=200 && y<=300){
-                    text1.SettextColor(255, 0, 0);
+                    text1.SettextColor(255, 228, 181);
                 }
                 else if(x>=200 && x<=500 && y>=350 && y<=450){
-                    text2.SettextColor(255, 0 ,0);
+                    text2.SettextColor(255, 105 ,180);
                 }
                 else if(x>=200 && x<= 400 && y>=500 && y<=580){
                     text3.SettextColor(255, 0, 0);
@@ -176,4 +176,61 @@ int Menu::ChooseBird(SDL_Renderer* render_, const char* text1_, const char* text
     }
 }
 
-
+int Pause::RenderPause(SDL_Renderer* render_)
+{
+    bool ret1 = continue_.loadImage(render_, "img//continue.png");
+    bool ret2 = exit_.loadImage(render_, "img//exit.png");
+    if(!ret1 || !ret2) return -1;
+    continue_.SetRect(SCREEN_WIDTH/2 - 150, SCREEN_HEIGHT/2-50);
+    exit_.SetRect(SCREEN_WIDTH/2 + 50, SCREEN_HEIGHT/2-50);
+    int x;
+    int y;
+    while(1){
+        continue_.Render(render_);
+        exit_.Render(render_);
+        SDL_Rect rect_continue = continue_.GetRect();
+        SDL_Rect rect_exit = exit_.GetRect();
+        while(SDL_PollEvent(&event_)){
+            switch (event_.type)
+            {
+                case SDL_QUIT:
+                    continue_.Free();
+                    exit_.Free();
+                    return -1;
+                    break;
+                case SDL_MOUSEBUTTONDOWN:
+                    x = event_.button.x;
+                    y = event_.button.y;
+                    if(x>=rect_continue.x && x<=rect_continue.x+rect_continue.w && y>=rect_continue.y && y<=rect_continue.y+rect_continue.h){
+                        continue_.Free();
+                        exit_.Free();
+                        SDL_Delay(500);
+                        return 1;
+                    }
+                    else if(x>=rect_exit.x && x<=rect_exit.x+rect_exit.w && y>=rect_exit.y && y<=rect_exit.y+rect_exit.h){
+                        continue_.Free();
+                        exit_.Free();
+                        return -1;
+                    }
+                    break;
+                case SDL_MOUSEMOTION:
+                    x = event_.motion.x;
+                    y = event_.motion.y;
+                    if(x>=rect_continue.x && x<=rect_continue.x+rect_continue.w && y>=rect_continue.y && y<=rect_continue.y+rect_continue.h){
+                        SDL_Rect res = {SCREEN_WIDTH/2 - 175, SCREEN_HEIGHT/2 - 75, 150, 150};
+                        continue_.Set_Rect(res);
+                    }else if(x>=rect_exit.x && x<=rect_exit.x+rect_exit.w && y>=rect_exit.y && y<=rect_exit.y+rect_exit.h){
+                        SDL_Rect res = {SCREEN_WIDTH/2 + 25, SCREEN_HEIGHT/2 -75, 150, 150};
+                        exit_.Set_Rect(res);
+                    }else{
+                        SDL_Rect res1 = {SCREEN_WIDTH/2 - 150, SCREEN_HEIGHT/2-50, 100, 100};
+                        SDL_Rect res2 = {SCREEN_WIDTH/2 + 50, SCREEN_HEIGHT/2-50, 100, 100};
+                        continue_.Set_Rect(res1);
+                        exit_.Set_Rect(res2);
+                    }
+                    break;
+            }
+        }
+        SDL_RenderPresent(render_);
+    }
+}

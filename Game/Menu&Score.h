@@ -32,4 +32,13 @@ public:
     int ChooseBird(SDL_Renderer* render_, const char* text1_, const char* text2_, const char* text3_);
 };
 
+class Pause
+{
+private:
+    BaseObject continue_;
+    BaseObject exit_;
+public:
+    int RenderPause(SDL_Renderer* render_);
+};
+
 #endif // TEXT_H_INCLUDED
