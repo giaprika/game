@@ -41,6 +41,11 @@ void Text::RenderRectScore(SDL_Renderer* render_)
     SDL_RenderFillRect(render_, &rect_score);
 }
 
+Menu::Menu()
+{
+    _gchunk_ = Mix_LoadWAV("sound//click.wav");
+}
+
 int Menu::ShowMenu(SDL_Renderer* render_, const char* text1_, const char* text2_, const char* text3_, const char* text4_, const char* text5_)
 {
     bool ret = BaseObject::loadImage(render_, "img//MENU.png");
@@ -97,10 +102,12 @@ int Menu::ShowMenu(SDL_Renderer* render_, const char* text1_, const char* text2_
                 x = event_.button.x;
                 y = event_.button.y;
                 if(x>=200 && x<=400 && y>=550 && y<=630){
+                    Mix_PlayChannel(-1, _gchunk_, 0);
                     BaseObject::Free();
                     return -1;
                 }
                 if(x>=200 && x<=600 && y>=400 && y<=500){
+                    Mix_PlayChannel(-1, _gchunk_, 0);
                     BaseObject::Free();
                     return 1;
                 }
@@ -169,18 +176,22 @@ int Menu::ChooseBird(SDL_Renderer* render_, const char* text1_, const char* text
                 x = event_.button.x;
                 y = event_.button.y;
                 if(x>=200 && x<=500 && y>=200 && y<=300){
+                    Mix_PlayChannel(-1, _gchunk_, 0);
                     BaseObject::Free();
                     return 1;
                 }
                 if(x>=200 && x<=500 && y>=350 && y<=450){
+                    Mix_PlayChannel(-1, _gchunk_, 0);
                     BaseObject::Free();
                     return 2;
                 }
                 if(x>=200 && x<=400 && y>=500 && y<=580){
+                    Mix_PlayChannel(-1, _gchunk_, 0);
                     BaseObject::Free();
                     return -1;
                 }
                 if(x>=500 && x<=700 && y>=500 && y<=580){
+                    Mix_PlayChannel(-1, _gchunk_, 0);
                     BaseObject::Free();
                     return 3;
                 }
@@ -232,10 +243,12 @@ int Menu::ShowRule(SDL_Renderer* render_, const char* text1_, const char* text2_
                     x = event_.button.x;
                     y = event_.button.y;
                     if(x>=100 && x<=300 && y>=500 && y<=600){
+                        Mix_PlayChannel(-1, _gchunk_, 0);
                         BaseObject::Free();
                         return -1;
                     }
                     if(x>=900 && x<=1100 && y>=500 && y<=600){
+                        Mix_PlayChannel(-1, _gchunk_, 0);
                         BaseObject::Free();
                         return 3;
                     }
@@ -244,6 +257,11 @@ int Menu::ShowRule(SDL_Renderer* render_, const char* text1_, const char* text2_
         }
         SDL_RenderPresent(render_);
     }
+}
+
+Pause::Pause()
+{
+    gchunk_ = Mix_LoadWAV("sound//click.wav");
 }
 
 int Pause::RenderPause(SDL_Renderer* render_)
@@ -255,6 +273,10 @@ int Pause::RenderPause(SDL_Renderer* render_)
     exit_.SetRect(SCREEN_WIDTH/2 + 50, SCREEN_HEIGHT/2-50);
     int x;
     int y;
+    SDL_Rect res_continue = {SCREEN_WIDTH/2 - 160, SCREEN_HEIGHT/2 - 60, 120, 120};
+    SDL_Rect res_exit = {SCREEN_WIDTH/2 + 40, SCREEN_HEIGHT/2 - 60, 120, 120};
+    SDL_Rect res1 = {SCREEN_WIDTH/2 - 150, SCREEN_HEIGHT/2 - 50, 100, 100};
+    SDL_Rect res2 = {SCREEN_WIDTH/2 + 50, SCREEN_HEIGHT/2 -50, 100, 100};
     while(1){
         continue_.Render(render_);
         exit_.Render(render_);
@@ -272,12 +294,14 @@ int Pause::RenderPause(SDL_Renderer* render_)
                     x = event_.button.x;
                     y = event_.button.y;
                     if(x>=rect_continue.x && x<=rect_continue.x+rect_continue.w && y>=rect_continue.y && y<=rect_continue.y+rect_continue.h){
+                        Mix_PlayChannel(-1, gchunk_, 0);
                         continue_.Free();
                         exit_.Free();
                         SDL_Delay(500);
                         return 1;
                     }
                     else if(x>=rect_exit.x && x<=rect_exit.x+rect_exit.w && y>=rect_exit.y && y<=rect_exit.y+rect_exit.h){
+                        Mix_PlayChannel(-1, gchunk_, 0);
                         continue_.Free();
                         exit_.Free();
                         return 2;
@@ -287,14 +311,10 @@ int Pause::RenderPause(SDL_Renderer* render_)
                     x = event_.motion.x;
                     y = event_.motion.y;
                     if(x>=rect_continue.x && x<=rect_continue.x+rect_continue.w && y>=rect_continue.y && y<=rect_continue.y+rect_continue.h){
-                        SDL_Rect res = {SCREEN_WIDTH/2 - 160, SCREEN_HEIGHT/2 - 60, 120, 120};
-                        continue_.Set_Rect(res);
+                        continue_.Set_Rect(res_continue);
                     }else if(x>=rect_exit.x && x<=rect_exit.x+rect_exit.w && y>=rect_exit.y && y<=rect_exit.y+rect_exit.h){
-                        SDL_Rect res = {SCREEN_WIDTH/2 + 40, SCREEN_HEIGHT/2 - 60, 120, 120};
-                        exit_.Set_Rect(res);
+                        exit_.Set_Rect(res_exit);
                     }else{
-                        SDL_Rect res1 = {SCREEN_WIDTH/2 - 150, SCREEN_HEIGHT/2 - 50, 100, 100};
-                        SDL_Rect res2 = {SCREEN_WIDTH/2 + 50, SCREEN_HEIGHT/2 -50, 100, 100};
                         continue_.Set_Rect(res1);
                         exit_.Set_Rect(res2);
                     }

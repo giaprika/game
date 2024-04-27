@@ -15,5 +15,4 @@ static SDL_Window* window_ = NULL;
 static SDL_Renderer* render_ = NULL;
 static SDL_Event event_;
 static bool is_paused = false;
-
 #endif // DEFINE_H_INCLUDED

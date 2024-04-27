@@ -9,10 +9,6 @@ Bird::Bird()
     dem=0;
     is_saved = false;
 }
-Bird::~Bird()
-{
-    BaseObject::Free();
-}
 
 void Bird::HandleInputAction(SDL_Event events)
 {

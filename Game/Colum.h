@@ -17,7 +17,7 @@ public:
     void SetXpos(const int &xp);
     SDL_Rect GetRectColum() const;
     void Run(int x_val);
-    bool Getisback();
+    bool Getisback() const {return is_back;}
     void Setisback(bool ib);
     void UpDown(bool &is_upping, SDL_Rect &rect_to_updown, int y_);
 };
@@ -37,15 +37,15 @@ public:
     void ShowDoubleColum(SDL_Renderer* render_);
     void Move();
     void SetX(const int &xp);
-    SDL_Rect GetTopRect();
-    bool Getisback_();
+    SDL_Rect GetTopRect() const;
+    bool Getisback_() const {return is_back_;}
     void Setisback_(bool ib_);
     bool CheckCollision(const SDL_Rect &rect);
     bool CheckPass(const SDL_Rect &rect);
-    bool Getispass() {return is_pass_;}
+    bool Getispass() const {return is_pass_;}
     void Setispass(bool pass) {is_pass_ = pass;}
     void SetPassrect();
-    SDL_Rect GetPassrect() {return pass_rect;}
+    SDL_Rect GetPassrect() const {return pass_rect;}
     void UpDown_(bool &is_upping);
 };
 
@@ -66,12 +66,12 @@ public:
     void ShowList(SDL_Renderer* render_);
     void SetBird_rect(SDL_Rect bird_rect);
     std::vector<DoubleColum*> GetList() {return Colum_list;}
-    bool Getdie() {return die;}
+    bool Getdie() const {return die;}
     void Setdie(bool die_) {die = die_;}
-    int Getscore() {return score;}
+    int Getscore() const {return score;}
     void Setsaved_(bool saved) {saved_ = saved;}
-    bool Getsaved_(){return saved_;}
-    SDL_Rect GetBird_rect() {return Bird_rect;}
+    bool Getsaved_()const {return saved_;}
+    SDL_Rect GetBird_rect() const {return Bird_rect;}
     void waitUntilKeyPressed();
     void pauseMusic() { Mix_PauseMusic(); }
     void resumeMusic() { Mix_ResumeMusic(); }
@@ -90,7 +90,7 @@ public:
     void ShowSave(SDL_Renderer* render_);
     void SetRectSave (SDL_Rect rect) {rect_ = rect;}
     void SaveMove() {rect_.x -= 3;}
-    bool GetIs_Looted() {return is_looted;}
+    bool GetIs_Looted() const {return is_looted;}
     void SetIs_Looted(bool loot) {is_looted = loot;}
 
 };

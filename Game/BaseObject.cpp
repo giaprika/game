@@ -44,8 +44,3 @@ void BaseObject::SetRect(const int &x, const int &y)
     rect_.x=x;
     rect_.y=y;
 }
-
-SDL_Rect BaseObject::GetRect() const
-{
-    return rect_;
-}

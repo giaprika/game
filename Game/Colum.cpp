@@ -35,6 +35,7 @@ void Colum::ShowColum(SDL_Renderer* render_)
 {
     BaseObject::Render(render_);
 }
+
 SDL_Rect Colum::GetRectColum() const
 {
     return BaseObject::GetRect();
@@ -46,11 +47,6 @@ void Colum::Run(int x_val)
         rect_.x += x_val;
         if(rect_.x + rect_.w < 0) is_back = true;
     }
-}
-
-bool Colum::Getisback()
-{
-    return is_back;
 }
 
 void Colum::Setisback(bool ib)
@@ -111,14 +107,9 @@ void DoubleColum::SetX(const int &xp)
     bottom_colum.SetXpos(xp);
 }
 
-SDL_Rect DoubleColum::GetTopRect()
+SDL_Rect DoubleColum::GetTopRect() const
 {
     return top_colum.GetRectColum();
-}
-
-bool DoubleColum::Getisback_()
-{
-    return is_back_;
 }
 
 void DoubleColum::Setisback_(bool ib_)

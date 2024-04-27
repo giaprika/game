@@ -28,7 +28,9 @@ private:
     Text text3;
     Text text4;
     Text text5;
+    Mix_Chunk* _gchunk_;
 public:
+    Menu();
     int ShowMenu(SDL_Renderer* render_, const char* text1_, const char* text2_, const char* text3_, const char* text4_, const char* text5_);
     int ChooseBird(SDL_Renderer* render_, const char* text1_, const char* text2_, const char* text3_, const char* text4_);
     int ShowRule(SDL_Renderer* render_, const char* text1_, const char* text2_);
@@ -39,7 +41,9 @@ class Pause
 private:
     BaseObject continue_;
     BaseObject exit_;
+    Mix_Chunk* gchunk_;
 public:
+    Pause();
     int RenderPause(SDL_Renderer* render_);
 };
 
