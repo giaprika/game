@@ -11,7 +11,7 @@ Bird::Bird()
 }
 Bird::~Bird()
 {
-    this->Free();
+    BaseObject::Free();
 }
 
 void Bird::HandleInputAction(SDL_Event events)
@@ -72,5 +72,5 @@ void Bird::Rendertext3(SDL_Renderer* render_)
 
 void Bird::SetRect_(const int &x, const int &y)
 {
-    this->SetRect(x, y);
+    BaseObject::SetRect(x, y);
 }

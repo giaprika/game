@@ -3,8 +3,8 @@
 #include "Bird.h"
 #include "Colum.h"
 #include "Menu&Score.h"
+#include <fstream>
 
-BaseObject bk_grd;
 bool Init()
 {
     int ret = SDL_Init(SDL_INIT_EVERYTHING);
@@ -18,9 +18,8 @@ bool Init()
     return true;
 }
 
-void close()
+void closed()
 {
-    bk_grd.Free();
     SDL_DestroyRenderer(render_);
     render_ = NULL;
     SDL_DestroyWindow(window_);
@@ -31,20 +30,33 @@ void close()
     SDL_Quit();
 }
 
+int high_score;
+int Get_highscore()
+{
+    std::ifstream file("high_score.txt");
+    int n;
+    file >> n;
+    file.close();
+    return n;
+}
 
 int main(int argc, char* argv[])
 {
     srand(time(NULL));
-    if(Init() == false) return -1;
+    BaseObject bk_grd;
+    if(Init() == false) return 0;
     bool quit=false;
     Menu menu;
-    int ret_menu = menu.ShowMenu(render_, "Play Game", "Exit", "", "Flappy Bird");
+    int ret_menu = menu.ShowMenu(render_, "Play Game", "Exit", "", "Flappy Bird", "");
     if(ret_menu == -1){
-        quit=true;
+        closed(); /**/
+        return 0; /**/
     }
 again_label:
     Pause pause;
     Bird bird;
+    bool rett = bird.loadImage(render_, "img//bird1_1.png"); /**/
+    if(!rett) return 0; /**/
     if(ret_menu != -1){
         ret_menu = 3;
         while(ret_menu == 3){
@@ -53,7 +65,8 @@ again_label:
         }
     }
     if(ret_menu == -1){
-        quit=true;
+        closed();
+        return 0;
     }
     bool ret1, ret2;
     if(ret_menu == 1){
@@ -64,22 +77,23 @@ again_label:
         ret1 = bk_grd.loadImage(render_, "img//bk_ground2.png");
         ret2 = bird.LoadBird(render_, "img//bird2_1.png", "img//bird2_2.png", "img//bird2_3.png");
     }
-    if(!ret1 || !ret2) return -1;
+    if(!ret1 || !ret2) return 0;
     bird.SetRect(100, 100);
 
     ColumList colum_;
     bool ret = colum_.InitColumList(render_);
-    if(ret == false) return -1;
+    if(ret == false) return 0;
 
     Text text_score;
     ret = text_score.loadFont("ARCADE.ttf", 40);
-    if(ret==false) return -1;
+    if(ret==false) return 0;
 
     Save Mangbv;
     ret = Mangbv.LoadSave(render_, "img//save.png");
-    if (ret == false) return -1;
+    if (ret == false) return 0;
 
     while(!quit && !colum_.Getdie()){
+        high_score = Get_highscore();
         while (SDL_PollEvent(&event_) != 0)
         {
             if (event_.type == SDL_QUIT)
@@ -140,6 +154,8 @@ again_label:
             Mangbv.SetIs_Looted(bird.GetIs_saved());
         }
 
+        if(diem > 10) colum_.List_UpDown();
+
         if(is_paused){
             colum_.pauseMusic();
             int ret_pause = pause.RenderPause(render_);
@@ -158,8 +174,15 @@ again_label:
         SDL_RenderPresent(render_);
         if(colum_.Getdie()){
             SDL_Delay(1000);
+            if(diem > high_score){
+                high_score = diem;
+                std::ofstream file("high_score.txt");
+                file << diem;
+                file.close();
+            }
+            std::string highscore = "High Score: " + std::to_string(high_score);
             std::string score = "Score: " + diemso;
-            int ret_menu = menu.ShowMenu(render_, "Play Again", "Exit", score.c_str(), "Game Over");
+            int ret_menu = menu.ShowMenu(render_, "Play Again", "Exit", score.c_str(), "Game Over", highscore.c_str());
             if(ret_menu == -1){
                 quit = true;
                 continue;
@@ -169,5 +192,7 @@ again_label:
             }
         }
     }
-    close();
+    colum_.freeColum();
+    closed();
+    return 0;
 }

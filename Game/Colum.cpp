@@ -2,6 +2,7 @@
 #include "Colum.h"
 
 int pos[7]={1000, 1300, 1600, 1850, 2150, 2400, 2650};
+bool is_upping[7] = {true, true, false, true, false, false, true};
 Colum::Colum()
 {
     x_pos_=0;
@@ -10,7 +11,7 @@ Colum::Colum()
 }
 Colum::~Colum()
 {
-    this->Free();
+    BaseObject::Free();
 }
 
 bool Colum::LoadColum(SDL_Renderer* render_, std::string file_name)
@@ -21,22 +22,22 @@ bool Colum::LoadColum(SDL_Renderer* render_, std::string file_name)
 
 void Colum::SetPos(const int &xp, const int &yp)
 {
-    this->SetRect(xp, yp);
+    BaseObject::SetRect(xp, yp);
 }
 
 void Colum::SetXpos(const int &xp)
 {
-    SDL_Rect rect = this->GetRect();
-    this->SetRect(xp, rect.y);
+    SDL_Rect rect = BaseObject::GetRect();
+    BaseObject::SetRect(xp, rect.y);
 }
 
 void Colum::ShowColum(SDL_Renderer* render_)
 {
-    this->Render(render_);
+    BaseObject::Render(render_);
 }
 SDL_Rect Colum::GetRectColum() const
 {
-    return this->GetRect();
+    return BaseObject::GetRect();
 }
 
 void Colum::Run(int x_val)
@@ -55,6 +56,17 @@ bool Colum::Getisback()
 void Colum::Setisback(bool ib)
 {
     is_back = ib;
+}
+
+void Colum::UpDown(bool &is_upping, SDL_Rect &rect_to_updown, int y_)
+{
+    if(is_upping){
+        rect_.y -= y_;
+        if(rect_to_updown.y <= 0) is_upping = false;
+    }else{
+        rect_.y += y_;
+        if(rect_to_updown.y + rect_to_updown.h >= SCREEN_HEIGHT) is_upping = true;
+    }
 }
 
 DoubleColum::DoubleColum()
@@ -131,15 +143,6 @@ bool DoubleColum::CheckPass(const SDL_Rect &rect)
     return ret;
 }
 
-ColumList::ColumList()
-{
-    end_list=0;
-    die = false;
-    music = nullptr;
-    score = 0;
-    saved_ = false;
-}
-
 void DoubleColum::SetPassrect()
 {
     SDL_Rect top = top_colum.GetRectColum();
@@ -150,14 +153,22 @@ void DoubleColum::SetPassrect()
     pass_rect.h = bottom.y - (top.y + top.h);
 }
 
-//void ColumList::waitUntilKeyPressed()
-//{
-//    while (true) {
-//        if ( SDL_PollEvent(&event_) != 0 && (event_.type == SDL_KEYDOWN || event_.type == SDL_QUIT) )
-//            return;
-//        SDL_Delay(100);
-//    }
-//}
+void DoubleColum::UpDown_(bool &is_upping)
+{
+    int y_ = rand() % 3;
+    top_colum.UpDown(is_upping, pass_rect, y_);
+    bottom_colum.UpDown(is_upping, pass_rect, y_);
+}
+
+ColumList::ColumList()
+{
+    end_list=0;
+    die = false;
+    music = nullptr;
+    score = 0;
+    saved_ = false;
+    Bird_rect = {0, 0, 0, 0}; /**/
+}
 
 bool ColumList::InitColumList(SDL_Renderer* render_)
 {
@@ -209,7 +220,7 @@ void ColumList::ShowList(SDL_Renderer* render_)
         die = true;
     }
 
-    for(int i=0; i<Colum_list.size(); i++){
+    for(int i=0; i<(int)Colum_list.size(); i++){
         DoubleColum* cl = Colum_list.at(i);
         cl->SetPassrect();
         cl->Move();
@@ -233,7 +244,7 @@ void ColumList::ShowList(SDL_Renderer* render_)
                 }
                 SDL_Rect res = cl->GetPassrect();
                 Bird_rect.y = res.y + 50;
-//                waitUntilKeyPressed();
+                SDL_Delay(500);
                 saved_ = false;
             }else{
                 die = true;
@@ -266,6 +277,20 @@ Save::Save()
     is_looted = false;
 }
 
+void ColumList::freeColum()
+{
+    for(int i=0; i<(int)Colum_list.size(); i++){
+        delete Colum_list.at(i);
+    }
+    Colum_list.clear();
+}
+
+void ColumList::List_UpDown()
+{
+    for(int i=0; i<(int)Colum_list.size(); i++){
+        Colum_list.at(i)->UpDown_(is_upping[i]);
+    }
+}
 
 bool Save::LoadSave(SDL_Renderer* render_, std::string filename)
 {
@@ -275,5 +300,5 @@ bool Save::LoadSave(SDL_Renderer* render_, std::string filename)
 
 void Save::ShowSave(SDL_Renderer* render_)
 {
-    this->Render(render_);
+    BaseObject::Render(render_);
 }

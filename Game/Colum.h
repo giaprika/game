@@ -19,6 +19,7 @@ public:
     void Run(int x_val);
     bool Getisback();
     void Setisback(bool ib);
+    void UpDown(bool &is_upping, SDL_Rect &rect_to_updown, int y_);
 };
 
 class DoubleColum
@@ -45,6 +46,7 @@ public:
     void Setispass(bool pass) {is_pass_ = pass;}
     void SetPassrect();
     SDL_Rect GetPassrect() {return pass_rect;}
+    void UpDown_(bool &is_upping);
 };
 
 class ColumList
@@ -74,6 +76,8 @@ public:
     void pauseMusic() { Mix_PauseMusic(); }
     void resumeMusic() { Mix_ResumeMusic(); }
     void freeMusic() { Mix_FreeMusic(music); }
+    void freeColum();
+    void List_UpDown();
 };
 
 class Save : BaseObject
@@ -84,8 +88,8 @@ public:
     Save();
     bool LoadSave(SDL_Renderer* render_, std::string filename);
     void ShowSave(SDL_Renderer* render_);
-    void SetRectSave (SDL_Rect rect) {this->rect_ = rect;}
-    void SaveMove() {this->rect_.x -= 3;}
+    void SetRectSave (SDL_Rect rect) {rect_ = rect;}
+    void SaveMove() {rect_.x -= 3;}
     bool GetIs_Looted() {return is_looted;}
     void SetIs_Looted(bool loot) {is_looted = loot;}
 

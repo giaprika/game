@@ -29,17 +29,8 @@ void BaseObject::Free()
 bool BaseObject::loadImage(SDL_Renderer* render_, std::string filename)
 {
     Free();
-    SDL_Texture* newTexture = NULL;
-    SDL_Surface* surface = IMG_Load(filename.c_str());
-    if(surface != NULL){
-        newTexture = SDL_CreateTextureFromSurface(render_, surface);
-        if(newTexture != NULL){
-            rect_.w = surface->w;
-            rect_.h = surface->h;
-        }
-        SDL_FreeSurface(surface);
-        object_ = newTexture;
-    }
+    object_ = IMG_LoadTexture(render_, filename.c_str());
+    SDL_QueryTexture(object_, NULL, NULL, &rect_.w, &rect_.h);
     return object_ != NULL;
 }
 
