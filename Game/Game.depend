@@ -34,7 +34,7 @@
 1714229638 d:\gamegithub\game\game\baseobject.h
 	"Define.h"
 
-1714227016 d:\gamegithub\game\game\define.h
+1714407137 d:\gamegithub\game\game\define.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_net.h>
@@ -46,14 +46,14 @@
 	"BaseObject.h"
 	"Define.h"
 
-1714230388 source:d:\gamegithub\game\game\colum.cpp
+1714407137 source:d:\gamegithub\game\game\colum.cpp
 	"BaseObject.h"
 	"Colum.h"
 
-1714230506 d:\gamegithub\game\game\colum.h
+1714407137 d:\gamegithub\game\game\colum.h
 	"BaseObject.h"
 
-1714229535 source:d:\gamegithub\game\game\main.cpp
+1714407376 source:d:\gamegithub\game\game\main.cpp
 	"Define.h"
 	"BaseObject.h"
 	"Bird.h"

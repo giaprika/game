@@ -59,6 +59,7 @@ private:
     Mix_Music *music;
     int score;
     bool saved_;
+    bool just_lose_save;
 
 public:
     ColumList();
@@ -78,6 +79,9 @@ public:
     void freeMusic() { Mix_FreeMusic(music); }
     void freeColum();
     void List_UpDown();
+    bool Get_just_lose_save() const {return just_lose_save;}
+    void Set_just_lose_save(bool res) {just_lose_save = res;}
+    int Getend_list() const {return end_list;}
 };
 
 class Save : BaseObject

@@ -58,11 +58,6 @@ int main(int argc, char* argv[])
 again_label:
     Pause pause;
     Bird bird;
-    bool rett = bird.loadImage(render_, "img//bird1_1.png"); /**/
-    if(!rett){
-        close();
-        return 0;
-    }
     if(ret_menu != -1){
         ret_menu = 3;
         while(ret_menu == 3){
@@ -150,7 +145,11 @@ again_label:
             SDL_Rect birdrect = bird.GetRect();
             if(!Mangbv.GetIs_Looted()){
                 std::vector<DoubleColum*> listcolum = colum_.GetList();
-                rectsave = listcolum.at(6)->GetPassrect();
+                if(colum_.Get_just_lose_save()){
+                    index = colum_.Getend_list();
+                    colum_.Set_just_lose_save(false);
+                }
+                rectsave = listcolum[index]->GetPassrect();
                 rectsave = {rectsave.x-128, rectsave.y + 40, 70, 70};
                 if(SDL_HasIntersection(&rectsave, &birdrect)){
                     Mix_Chunk* gChunk = Mix_LoadWAV("sound//vobong.wav");

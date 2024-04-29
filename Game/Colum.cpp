@@ -158,7 +158,8 @@ ColumList::ColumList()
     music = nullptr;
     score = 0;
     saved_ = false;
-    Bird_rect = {0, 0, 0, 0}; /**/
+    Bird_rect = {0, 0, 0, 0};
+    just_lose_save = false;
 }
 
 bool ColumList::InitColumList(SDL_Renderer* render_)
@@ -212,12 +213,12 @@ void ColumList::ShowList(SDL_Renderer* render_)
     }
 
     for(int i=0; i<(int)Colum_list.size(); i++){
-        DoubleColum* cl = Colum_list.at(i);
+        DoubleColum* cl = Colum_list[i];
         cl->SetPassrect();
         cl->Move();
 
         if(cl->Getisback_()){
-            DoubleColum* endcl = Colum_list.at(end_list);
+            DoubleColum* endcl = Colum_list[end_list];
             SDL_Rect end_rect = endcl->GetTopRect();
             int xp = end_rect.x + rand()%20 + 230;
             cl->SetX(xp);
@@ -237,6 +238,7 @@ void ColumList::ShowList(SDL_Renderer* render_)
                 Bird_rect.y = res.y + 50;
                 SDL_Delay(500);
                 saved_ = false;
+                just_lose_save = true;
             }else{
                 die = true;
                 Mix_Chunk* gChunk = Mix_LoadWAV("sound//collide.wav");
@@ -271,7 +273,7 @@ Save::Save()
 void ColumList::freeColum()
 {
     for(int i=0; i<(int)Colum_list.size(); i++){
-        delete Colum_list.at(i);
+        delete Colum_list[i];
     }
     Colum_list.clear();
 }
@@ -279,7 +281,7 @@ void ColumList::freeColum()
 void ColumList::List_UpDown()
 {
     for(int i=0; i<(int)Colum_list.size(); i++){
-        Colum_list.at(i)->UpDown_(is_upping[i]);
+        Colum_list[i]->UpDown_(is_upping[i]);
     }
 }
 
