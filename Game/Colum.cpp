@@ -9,10 +9,6 @@ Colum::Colum()
     y_pos_=0;
     is_back=false;
 }
-Colum::~Colum()
-{
-    BaseObject::Free();
-}
 
 bool Colum::LoadColum(SDL_Renderer* render_, std::string file_name)
 {
@@ -63,6 +59,11 @@ void Colum::UpDown(bool &is_upping, SDL_Rect &rect_to_updown, int y_)
         rect_.y += y_;
         if(rect_to_updown.y + rect_to_updown.h >= SCREEN_HEIGHT) is_upping = true;
     }
+}
+
+void Colum::FreeColum()
+{
+    BaseObject::Free();
 }
 
 DoubleColum::DoubleColum()
@@ -149,6 +150,12 @@ void DoubleColum::UpDown_(bool &is_upping)
     int y_ = rand() % 3;
     top_colum.UpDown(is_upping, pass_rect, y_);
     bottom_colum.UpDown(is_upping, pass_rect, y_);
+}
+
+void DoubleColum::FreeDoubleColum()
+{
+    top_colum.FreeColum();
+    bottom_colum.FreeColum();
 }
 
 ColumList::ColumList()
@@ -270,9 +277,10 @@ Save::Save()
     is_looted = false;
 }
 
-void ColumList::freeColum()
+void ColumList::FreeColumList()
 {
     for(int i=0; i<(int)Colum_list.size(); i++){
+        Colum_list[i]->FreeDoubleColum();
         delete Colum_list[i];
     }
     Colum_list.clear();
@@ -294,4 +302,9 @@ bool Save::LoadSave(SDL_Renderer* render_, std::string filename)
 void Save::ShowSave(SDL_Renderer* render_)
 {
     BaseObject::Render(render_);
+}
+
+void Save::FreeSave()
+{
+    BaseObject::Free();
 }

@@ -70,3 +70,11 @@ void Bird::SetRect_(const int &x, const int &y)
 {
     BaseObject::SetRect(x, y);
 }
+
+void Bird::FreeBird()
+{
+    BaseObject::Free();
+    SDL_DestroyTexture(text1);
+    SDL_DestroyTexture(text2);
+    SDL_DestroyTexture(text3);
+}

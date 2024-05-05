@@ -92,7 +92,7 @@ again_label:
     }
 
     Text text_score;
-    ret = text_score.loadFont("ARCADE.ttf", 40);
+    ret = text_score.loadFont("font.ttf", 40);
     if(ret==false){
         close();
         return 0;
@@ -205,11 +205,20 @@ again_label:
                 continue;
             }
             if(ret_menu == 1){
+                pause.FreePause();
+                bird.FreeBird();
+                colum_.FreeColumList();
+                text_score.FreeText();
+                Mangbv.FreeSave();
                 goto again_label;
             }
         }
     }
-    colum_.freeColum();
+    pause.FreePause();
+    bird.FreeBird();
+    colum_.FreeColumList();
+    text_score.FreeText();
+    Mangbv.FreeSave();
     close();
     return 0;
 }

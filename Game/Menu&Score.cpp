@@ -41,6 +41,12 @@ void Text::RenderRectScore(SDL_Renderer* render_)
     SDL_RenderFillRect(render_, &rect_score);
 }
 
+void Text::FreeText()
+{
+    SDL_DestroyTexture(texture);
+    TTF_CloseFont(font);
+}
+
 Menu::Menu()
 {
     _gchunk_ = Mix_LoadWAV("sound//click.wav");
@@ -50,11 +56,11 @@ int Menu::ShowMenu(SDL_Renderer* render_, const char* text1_, const char* text2_
 {
     bool ret = BaseObject::loadImage(render_, "img//MENU.png");
     if(!ret) return -1;
-    bool ret1 = text1.loadFont("ARCADE.ttf", 30);
-    bool ret2 = text2.loadFont("ARCADE.ttf", 30);
-    bool ret3 = text3.loadFont("ARCADE.ttf", 30);
-    bool ret4 = text4.loadFont("ARCADE.ttf", 30);
-    bool ret5 = text5.loadFont("ARCADE.ttf", 30);
+    bool ret1 = text1.loadFont("font.ttf", 30);
+    bool ret2 = text2.loadFont("font.ttf", 30);
+    bool ret3 = text3.loadFont("font.ttf", 30);
+    bool ret4 = text4.loadFont("font.ttf", 30);
+    bool ret5 = text5.loadFont("font.ttf", 30);
     if(!ret1 || !ret2 || !ret3 || !ret4 || !ret5) return -1;
     text1.Settext(text1_);
     text2.Settext(text2_);
@@ -123,10 +129,10 @@ int Menu::ChooseBird(SDL_Renderer* render_, const char* text1_, const char* text
 {
     bool ret = BaseObject::loadImage(render_, "img//MENU.png");
     if(!ret) return -1;
-    bool ret1 = text1.loadFont("ARCADE.ttf", 30);
-    bool ret2 = text2.loadFont("ARCADE.ttf", 30);
-    bool ret3 = text3.loadFont("ARCADE.ttf", 30);
-    bool ret4 = text4.loadFont("ARCADE.ttf", 30);
+    bool ret1 = text1.loadFont("font.ttf", 30);
+    bool ret2 = text2.loadFont("font.ttf", 30);
+    bool ret3 = text3.loadFont("font.ttf", 30);
+    bool ret4 = text4.loadFont("font.ttf", 30);
     if(!ret1 || !ret2 || !ret3 || !ret4) return -1;
     text1.Settext(text1_);
     text2.Settext(text2_);
@@ -206,8 +212,8 @@ int Menu::ShowRule(SDL_Renderer* render_, const char* text1_, const char* text2_
 {
     bool ret = BaseObject::loadImage(render_, "img//rule.png");
     if(!ret) return -1;
-    bool ret1 = text1.loadFont("ARCADE.ttf", 30);
-    bool ret2 = text2.loadFont("ARCADE.ttf", 30);
+    bool ret1 = text1.loadFont("font.ttf", 30);
+    bool ret2 = text2.loadFont("font.ttf", 30);
     if(!ret1 || !ret2) return -1;
     text1.Settext(text1_);
     text2.Settext(text2_);
@@ -259,6 +265,17 @@ int Menu::ShowRule(SDL_Renderer* render_, const char* text1_, const char* text2_
     }
 }
 
+void Menu::FreeMenu()
+{
+    BaseObject::Free();
+    text1.FreeText();
+    text2.FreeText();
+    text3.FreeText();
+    text4.FreeText();
+    text5.FreeText();
+    Mix_FreeChunk(_gchunk_);
+}
+
 Pause::Pause()
 {
     gchunk_ = Mix_LoadWAV("sound//click.wav");
@@ -290,23 +307,6 @@ int Pause::RenderPause(SDL_Renderer* render_)
                     exit_.Free();
                     return -1;
                     break;
-                case SDL_MOUSEBUTTONDOWN:
-                    x = event_.button.x;
-                    y = event_.button.y;
-                    if(x>=rect_continue.x && x<=rect_continue.x+rect_continue.w && y>=rect_continue.y && y<=rect_continue.y+rect_continue.h){
-                        Mix_PlayChannel(-1, gchunk_, 0);
-                        continue_.Free();
-                        exit_.Free();
-                        SDL_Delay(500);
-                        return 1;
-                    }
-                    else if(x>=rect_exit.x && x<=rect_exit.x+rect_exit.w && y>=rect_exit.y && y<=rect_exit.y+rect_exit.h){
-                        Mix_PlayChannel(-1, gchunk_, 0);
-                        continue_.Free();
-                        exit_.Free();
-                        return 2;
-                    }
-                    break;
                 case SDL_MOUSEMOTION:
                     x = event_.motion.x;
                     y = event_.motion.y;
@@ -319,8 +319,35 @@ int Pause::RenderPause(SDL_Renderer* render_)
                         exit_.Set_Rect(res2);
                     }
                     break;
+                case SDL_MOUSEBUTTONDOWN:
+                    x = event_.button.x;
+                    y = event_.button.y;
+                    if(x>=rect_continue.x && x<=rect_continue.x+rect_continue.w && y>=rect_continue.y && y<=rect_continue.y+rect_continue.h){
+                        Mix_PlayChannel(-1, gchunk_, 0);
+//                        continue_.Free();
+//                        exit_.Free();
+                        FreePause();
+                        SDL_Delay(500);
+
+                        return 1;
+                    }
+                    else if(x>=rect_exit.x && x<=rect_exit.x+rect_exit.w && y>=rect_exit.y && y<=rect_exit.y+rect_exit.h){
+                        Mix_PlayChannel(-1, gchunk_, 0);
+//                        continue_.Free();
+//                        exit_.Free();
+                        FreePause();
+                        return 2;
+                    }
+                    break;
             }
         }
         SDL_RenderPresent(render_);
     }
+}
+
+void Pause::FreePause()
+{
+    continue_.Free();
+    exit_.Free();
+    Mix_FreeChunk(gchunk_);
 }

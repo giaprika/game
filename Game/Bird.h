@@ -22,6 +22,7 @@ public:
     bool GetIs_saved() const {return is_saved;}
     void SetIs_saved(bool saved) {is_saved = saved;}
     void SetRect_(const int &x, const int &y);
+    void FreeBird();
 };
 
 #endif // BIRD_H_INCLUDED

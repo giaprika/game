@@ -18,6 +18,7 @@ public:
     void Settext(const char* path) {text = path;}
     void SettextColor(int r_, int g_, int b_);
     void RenderRectScore(SDL_Renderer* render_);
+    void FreeText();
 };
 
 class Menu : BaseObject
@@ -34,6 +35,7 @@ public:
     int ShowMenu(SDL_Renderer* render_, const char* text1_, const char* text2_, const char* text3_, const char* text4_, const char* text5_);
     int ChooseBird(SDL_Renderer* render_, const char* text1_, const char* text2_, const char* text3_, const char* text4_);
     int ShowRule(SDL_Renderer* render_, const char* text1_, const char* text2_);
+    void FreeMenu();
 };
 
 class Pause
@@ -45,6 +47,7 @@ private:
 public:
     Pause();
     int RenderPause(SDL_Renderer* render_);
+    void FreePause();
 };
 
 #endif // TEXT_H_INCLUDED
