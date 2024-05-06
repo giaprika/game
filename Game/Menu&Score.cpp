@@ -52,25 +52,22 @@ Menu::Menu()
     _gchunk_ = Mix_LoadWAV("sound//click.wav");
 }
 
-int Menu::ShowMenu(SDL_Renderer* render_, const char* text1_, const char* text2_, const char* text3_, const char* text4_, const char* text5_)
+int Menu::ShowMenu(SDL_Renderer* render_, std::string filename, const char* text1_, const char* text2_, const char* text3_, const char* text4_)
 {
-    bool ret = BaseObject::loadImage(render_, "img//MENU.png");
+    bool ret = BaseObject::loadImage(render_, filename);
     if(!ret) return -1;
     bool ret1 = text1.loadFont("font.ttf", 30);
     bool ret2 = text2.loadFont("font.ttf", 30);
     bool ret3 = text3.loadFont("font.ttf", 30);
     bool ret4 = text4.loadFont("font.ttf", 30);
-    bool ret5 = text5.loadFont("font.ttf", 30);
-    if(!ret1 || !ret2 || !ret3 || !ret4 || !ret5) return -1;
+    if(!ret1 || !ret2 || !ret3 || !ret4) return -1;
     text1.Settext(text1_);
     text2.Settext(text2_);
     text3.Settext(text3_);
     text4.Settext(text4_);
-    text5.Settext(text5_);
 
     text3.SettextColor(0, 255, 255);
-    text4.SettextColor(255, 0, 0);
-    text5.SettextColor(255, 255, 0);
+    text4.SettextColor(255, 255, 0);
 
     BaseObject::Render(render_);
     int x=0;
@@ -78,11 +75,10 @@ int Menu::ShowMenu(SDL_Renderer* render_, const char* text1_, const char* text2_
 
     while(1)
     {
-        text1.renderTexture(render_, 200, 400, 400, 100);
-        text2.renderTexture(render_, 200, 550, 200, 80);
-        text3.renderTexture(render_, 200, 280, 400, 100);
-        text4.renderTexture(render_, 500, 30, 400, 140);
-        text5.renderTexture(render_, 200, 150, 500, 120);
+        text1.renderTexture(render_, 230, 300, 400, 100);
+        text2.renderTexture(render_, 780, 300, 200, 100);
+        text3.renderTexture(render_, 780, 180, 400, 100);
+        text4.renderTexture(render_, 130, 180, 500, 100);
         while(SDL_PollEvent(&event_))
         {
             switch(event_.type)
@@ -93,10 +89,10 @@ int Menu::ShowMenu(SDL_Renderer* render_, const char* text1_, const char* text2_
             case SDL_MOUSEMOTION:
                 x = event_.motion.x;
                 y = event_.motion.y;
-                if(x>=200 && x<=400 && y>=550 && y<=630){
+                if(x>=780 && x<=1080 && y>=300 && y<=400){
                     text2.SettextColor(255, 0, 0);
                 }
-                else if(x>=200 && x<=600 && y>=400 && y<=500){
+                else if(x>=230 && x<=630 && y>=300 && y<=400){
                     text1.SettextColor(255, 0 ,0);
                 }
                 else{
@@ -107,12 +103,12 @@ int Menu::ShowMenu(SDL_Renderer* render_, const char* text1_, const char* text2_
             case SDL_MOUSEBUTTONDOWN:
                 x = event_.button.x;
                 y = event_.button.y;
-                if(x>=200 && x<=400 && y>=550 && y<=630){
+                if(x>=780 && x<=1080 && y>=300 && y<=400){
                     Mix_PlayChannel(-1, _gchunk_, 0);
                     BaseObject::Free();
                     return -1;
                 }
-                if(x>=200 && x<=600 && y>=400 && y<=500){
+                if(x>=230 && x<=630 && y>=300 && y<=400){
                     Mix_PlayChannel(-1, _gchunk_, 0);
                     BaseObject::Free();
                     return 1;
@@ -127,7 +123,7 @@ int Menu::ShowMenu(SDL_Renderer* render_, const char* text1_, const char* text2_
 
 int Menu::ChooseBird(SDL_Renderer* render_, const char* text1_, const char* text2_, const char* text3_, const char* text4_)
 {
-    bool ret = BaseObject::loadImage(render_, "img//MENU.png");
+    bool ret = BaseObject::loadImage(render_, "img//choosebird.png");
     if(!ret) return -1;
     bool ret1 = text1.loadFont("font.ttf", 30);
     bool ret2 = text2.loadFont("font.ttf", 30);
@@ -145,10 +141,10 @@ int Menu::ChooseBird(SDL_Renderer* render_, const char* text1_, const char* text
 
     while(1)
     {
-        text1.renderTexture(render_, 200, 200, 300, 100);
-        text2.renderTexture(render_, 200, 350, 300, 100);
-        text3.renderTexture(render_, 200, 500, 200, 80);
-        text4.renderTexture(render_, 500, 500, 200, 80);
+        text1.renderTexture(render_, 120, 240, 260, 80);
+        text2.renderTexture(render_, 660, 240, 260, 80);
+        text3.renderTexture(render_, 330, 400, 200, 80);
+        text4.renderTexture(render_, 770, 400, 200, 80);
         while(SDL_PollEvent(&event_))
         {
             switch(event_.type)
@@ -159,16 +155,16 @@ int Menu::ChooseBird(SDL_Renderer* render_, const char* text1_, const char* text
             case SDL_MOUSEMOTION:
                 x = event_.motion.x;
                 y = event_.motion.y;
-                if(x>=200 && x<=500 && y>=200 && y<=300){
+                if(x>=120 && x<=380 && y>=240 && y<=320){
                     text1.SettextColor(255, 228, 181);
                 }
-                else if(x>=200 && x<=500 && y>=350 && y<=450){
+                else if(x>=660 && x<=920 && y>=240 && y<=320){
                     text2.SettextColor(255, 105 ,180);
                 }
-                else if(x>=200 && x<=400 && y>=500 && y<=580){
+                else if(x>=330 && x<=530 && y>=400 && y<=480){
                     text3.SettextColor(255, 0, 0);
                 }
-                else if(x>=500 && x<=700 && y>=500 &&y<=580){
+                else if(x>=770 && x<=970 && y>=400 &&y<=480){
                     text4.SettextColor(255, 0, 0);
                 }
                 else{
@@ -181,25 +177,25 @@ int Menu::ChooseBird(SDL_Renderer* render_, const char* text1_, const char* text
             case SDL_MOUSEBUTTONDOWN:
                 x = event_.button.x;
                 y = event_.button.y;
-                if(x>=200 && x<=500 && y>=200 && y<=300){
+                if(x>=120 && x<=380 && y>=240 && y<=320){
                     Mix_PlayChannel(-1, _gchunk_, 0);
                     BaseObject::Free();
-                    return 1;
+                    return BIRD_1;
                 }
-                if(x>=200 && x<=500 && y>=350 && y<=450){
+                if(x>=660 && x<=920 && y>=240 && y<=320){
                     Mix_PlayChannel(-1, _gchunk_, 0);
                     BaseObject::Free();
-                    return 2;
+                    return BIRD_2;
                 }
-                if(x>=200 && x<=400 && y>=500 && y<=580){
+                if(x>=330 && x<=530 && y>=400 && y<=480){
                     Mix_PlayChannel(-1, _gchunk_, 0);
                     BaseObject::Free();
                     return -1;
                 }
-                if(x>=500 && x<=700 && y>=500 && y<=580){
+                if(x>=770 && x<=970 && y>=400 &&y<=480){
                     Mix_PlayChannel(-1, _gchunk_, 0);
                     BaseObject::Free();
-                    return 3;
+                    return TO_BACK;
                 }
                 break;
             }
@@ -256,7 +252,7 @@ int Menu::ShowRule(SDL_Renderer* render_, const char* text1_, const char* text2_
                     if(x>=900 && x<=1100 && y>=500 && y<=600){
                         Mix_PlayChannel(-1, _gchunk_, 0);
                         BaseObject::Free();
-                        return 3;
+                        return TO_BACK;
                     }
                     break;
             }
@@ -272,7 +268,6 @@ void Menu::FreeMenu()
     text2.FreeText();
     text3.FreeText();
     text4.FreeText();
-    text5.FreeText();
     Mix_FreeChunk(_gchunk_);
 }
 
@@ -324,19 +319,16 @@ int Pause::RenderPause(SDL_Renderer* render_)
                     y = event_.button.y;
                     if(x>=rect_continue.x && x<=rect_continue.x+rect_continue.w && y>=rect_continue.y && y<=rect_continue.y+rect_continue.h){
                         Mix_PlayChannel(-1, gchunk_, 0);
-//                        continue_.Free();
-//                        exit_.Free();
-                        FreePause();
+                        continue_.Free();
+                        exit_.Free();
                         SDL_Delay(500);
-
-                        return 1;
+                        return CONTINUE;
                     }
                     else if(x>=rect_exit.x && x<=rect_exit.x+rect_exit.w && y>=rect_exit.y && y<=rect_exit.y+rect_exit.h){
                         Mix_PlayChannel(-1, gchunk_, 0);
-//                        continue_.Free();
-//                        exit_.Free();
-                        FreePause();
-                        return 2;
+                        continue_.Free();
+                        exit_.Free();
+                        return EXIT;
                     }
                     break;
             }

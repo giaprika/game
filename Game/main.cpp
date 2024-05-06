@@ -4,7 +4,6 @@
 #include "Colum.h"
 #include "Menu&Score.h"
 #include <fstream>
-
 bool Init()
 {
     int ret = SDL_Init(SDL_INIT_EVERYTHING);
@@ -50,7 +49,7 @@ int main(int argc, char* argv[])
     }
     bool quit=false;
     Menu menu;
-    int ret_menu = menu.ShowMenu(render_, "Play Game", "Exit", "", "Flappy Bird", "");
+    int ret_menu = menu.ShowMenu(render_,"img//MENU.png", "Play Game", "Exit", "", "");
     if(ret_menu == -1){
         close();
         return 0;
@@ -59,10 +58,10 @@ again_label:
     Pause pause;
     Bird bird;
     if(ret_menu != -1){
-        ret_menu = 3;
-        while(ret_menu == 3){
+        ret_menu = TO_BACK;
+        while(ret_menu == TO_BACK){
             ret_menu = menu.ChooseBird(render_, "Bird 1", "Bird 2", "Exit", "Rule");
-            if(ret_menu == 3) ret_menu = menu.ShowRule(render_, "Exit", "Back");
+            if(ret_menu == TO_BACK) ret_menu = menu.ShowRule(render_, "Exit", "Back");
         }
     }
     if(ret_menu == -1){
@@ -70,11 +69,11 @@ again_label:
         return 0;
     }
     bool ret1, ret2;
-    if(ret_menu == 1){
+    if(ret_menu == BIRD_1){
         ret1 = bk_grd.loadImage(render_, "img//bk_ground1.jpg");
         ret2 = bird.LoadBird(render_, "img//bird1_1.png", "img//bird1_2.png", "img//bird1_3.png");
     }
-    if(ret_menu == 2){
+    if(ret_menu == BIRD_2){
         ret1 = bk_grd.loadImage(render_, "img//bk_ground2.png");
         ret2 = bird.LoadBird(render_, "img//bird2_1.png", "img//bird2_2.png", "img//bird2_3.png");
     }
@@ -92,7 +91,7 @@ again_label:
     }
 
     Text text_score;
-    ret = text_score.loadFont("font.ttf", 40);
+    ret = text_score.loadFont("fonttt.ttf", 40);
     if(ret==false){
         close();
         return 0;
@@ -176,12 +175,12 @@ again_label:
         if(is_paused){
             colum_.pauseMusic();
             int ret_pause = pause.RenderPause(render_);
-            if(ret_pause == 1){
+            if(ret_pause == CONTINUE){
                 is_paused = false;
                 colum_.resumeMusic();
             }
             if(ret_pause == -1) quit = true;
-            if(ret_pause == 2){
+            if(ret_pause == EXIT){
                 is_paused = false;
                 colum_.Setdie(true);
                 colum_.freeMusic();
@@ -199,7 +198,7 @@ again_label:
             }
             std::string highscore = "High Score: " + std::to_string(high_score);
             std::string score = "Score: " + diemso;
-            int ret_menu = menu.ShowMenu(render_, "Play Again", "Exit", score.c_str(), "Game Over", highscore.c_str());
+            int ret_menu = menu.ShowMenu(render_,"img//gameover.png", "Play Again", "Exit", score.c_str(), highscore.c_str());
             if(ret_menu == -1){
                 quit = true;
                 continue;
