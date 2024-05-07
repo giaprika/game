@@ -98,7 +98,6 @@ public:
     bool GetIs_Looted() const {return is_looted;}
     void SetIs_Looted(bool loot) {is_looted = loot;}
     void FreeSave();
-
 };
 
 #endif // COLUM_H_INCLUDED

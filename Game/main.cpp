@@ -48,176 +48,178 @@ int main(int argc, char* argv[])
         return 0;
     }
     bool quit=false;
-    Menu menu;
-    int ret_menu = menu.ShowMenu(render_,"img//MENU.png", "Play Game", "Exit", "", "");
-    if(ret_menu == -1){
-        close();
-        return 0;
-    }
-again_label:
-    Pause pause;
-    Bird bird;
-    if(ret_menu != -1){
-        ret_menu = TO_BACK;
-        while(ret_menu == TO_BACK){
-            ret_menu = menu.ChooseBird(render_, "Bird 1", "Bird 2", "Exit", "Rule");
-            if(ret_menu == TO_BACK) ret_menu = menu.ShowRule(render_, "Exit", "Back");
-        }
-    }
-    if(ret_menu == -1){
-        close();
-        return 0;
-    }
-    bool ret1, ret2;
-    if(ret_menu == BIRD_1){
-        ret1 = bk_grd.loadImage(render_, "img//bk_ground1.jpg");
-        ret2 = bird.LoadBird(render_, "img//bird1_1.png", "img//bird1_2.png", "img//bird1_3.png");
-    }
-    if(ret_menu == BIRD_2){
-        ret1 = bk_grd.loadImage(render_, "img//bk_ground2.png");
-        ret2 = bird.LoadBird(render_, "img//bird2_1.png", "img//bird2_2.png", "img//bird2_3.png");
-    }
-    if(!ret1 || !ret2){
-        close();
-        return 0;
-    }
-    bird.SetRect(100, 100);
-
-    ColumList colum_;
-    bool ret = colum_.InitColumList(render_);
-    if(ret == false){
-        close();
-        return 0;
-    }
-
-    Text text_score;
-    ret = text_score.loadFont("fonttt.ttf", 40);
-    if(ret==false){
-        close();
-        return 0;
-    }
-
-    Save Mangbv;
-    ret = Mangbv.LoadSave(render_, "img//save.png");
-    if (ret == false){
-        close();
-        return 0;
-    }
-
-    while(!quit && !colum_.Getdie()){
-        high_score = Get_highscore();
-        while (SDL_PollEvent(&event_) != 0)
-        {
-            if (event_.type == SDL_QUIT)
-            {
-                quit = true;
-            }
-            if(event_.type == SDL_KEYDOWN)
-                if(event_.key.keysym.sym == SDLK_SPACE){
-                        is_paused = true;
-                }
-            bird.HandleInputAction(event_);
-        }
-        bk_grd.Render(render_);
-        bird.Run();
-
-        colum_.SetBird_rect(bird.GetRect());
-        colum_.Setsaved_(bird.GetIs_saved());
-        colum_.ShowList(render_);
-        bird.SetIs_saved(colum_.Getsaved_());
-        bird.SetRect_(colum_.GetBird_rect().x, colum_.GetBird_rect().y);
-
-        if(colum_.Getdie()){
-            bird.Rendertext3(render_);
-        }else{
-            bird.RenderBird(render_);
-        }
-
-        text_score.RenderRectScore(render_);
-        int diem = colum_.Getscore();
-        std::string diemso = std::to_string(diem);
-        text_score.Settext(diemso.c_str());
-        text_score.renderTexture(render_, SCREEN_WIDTH/2, 2, 50, 50);
-
-        if(diem >= 10){
-            SDL_Rect rectsave;
-            SDL_Rect birdrect = bird.GetRect();
-            if(!Mangbv.GetIs_Looted()){
-                std::vector<DoubleColum*> listcolum = colum_.GetList();
-                if(colum_.Get_just_lose_save()){
-                    index = colum_.Getend_list();
-                    colum_.Set_just_lose_save(false);
-                }
-                rectsave = listcolum[index]->GetPassrect();
-                rectsave = {rectsave.x-128, rectsave.y + 40, 70, 70};
-                if(SDL_HasIntersection(&rectsave, &birdrect)){
-                    Mix_Chunk* gChunk = Mix_LoadWAV("sound//vobong.wav");
-                    if(gChunk != nullptr){
-                        Mix_PlayChannel(-1, gChunk, 0);
-                    }
-                    Mangbv.SetIs_Looted(true);
-                    bird.SetIs_saved(true);
-                }
-                Mangbv.SetRectSave(rectsave);
-                Mangbv.ShowSave(render_);
-            }
-            else if(bird.GetIs_saved()){
-
-                rectsave = {birdrect.x - 10, birdrect.y - 20, 90, 85};
-                Mangbv.SetRectSave(rectsave);
-                Mangbv.ShowSave(render_);
-            }
-            Mangbv.SetIs_Looted(bird.GetIs_saved());
-        }
-
-        if(diem > 10) colum_.List_UpDown();
-
-        if(is_paused){
-            colum_.pauseMusic();
-            int ret_pause = pause.RenderPause(render_);
-            if(ret_pause == CONTINUE){
-                is_paused = false;
-                colum_.resumeMusic();
-            }
-            if(ret_pause == -1) quit = true;
-            if(ret_pause == EXIT){
-                is_paused = false;
-                colum_.Setdie(true);
-                colum_.freeMusic();
-            }
-        }
-
-        SDL_RenderPresent(render_);
-        if(colum_.Getdie()){
-            SDL_Delay(1000);
-            if(diem > high_score){
-                high_score = diem;
-                std::ofstream file("high_score.txt");
-                file << diem;
-                file.close();
-            }
-            std::string highscore = "High Score: " + std::to_string(high_score);
-            std::string score = "Score: " + diemso;
-            int ret_menu = menu.ShowMenu(render_,"img//gameover.png", "Play Again", "Exit", score.c_str(), highscore.c_str());
+    bool menu_show = true;
+    while(!quit){
+        Menu menu;
+        int ret_menu;
+        if(menu_show){
+            ret_menu = menu.ShowMenu(render_,"img//MENU.png", "Play Game", "Exit", "", "");
             if(ret_menu == -1){
-                quit = true;
-                continue;
+                close();
+                return 0;
             }
-            if(ret_menu == 1){
-                pause.FreePause();
-                bird.FreeBird();
-                colum_.FreeColumList();
-                text_score.FreeText();
-                Mangbv.FreeSave();
-                goto again_label;
+        }
+        Pause pause;
+        Bird bird;
+        if(ret_menu != -1){
+            ret_menu = TO_BACK;
+            while(ret_menu == TO_BACK){
+                ret_menu = menu.ChooseBird(render_, "Bird 1", "Bird 2", "Exit", "Rule");
+                if(ret_menu == TO_BACK) ret_menu = menu.ShowRule(render_, "Exit", "Back");
+            }
+        }
+        if(ret_menu == -1){
+            close();
+            return 0;
+        }
+        bool ret1, ret2;
+        if(ret_menu == BIRD_1){
+            ret1 = bk_grd.loadImage(render_, "img//bk_ground1.jpg");
+            ret2 = bird.LoadBird(render_, "img//bird1_1.png", "img//bird1_2.png", "img//bird1_3.png");
+        }
+        if(ret_menu == BIRD_2){
+            ret1 = bk_grd.loadImage(render_, "img//bk_ground2.png");
+            ret2 = bird.LoadBird(render_, "img//bird2_1.png", "img//bird2_2.png", "img//bird2_3.png");
+        }
+        if(!ret1 || !ret2){
+            close();
+            return 0;
+        }
+        bird.SetRect(100, 100);
+
+        ColumList colum_;
+        bool ret = colum_.InitColumList(render_);
+        if(ret == false){
+            close();
+            return 0;
+        }
+
+        Text text_score;
+        ret = text_score.loadFont("fonttt.ttf", 40);
+        if(ret==false){
+            close();
+            return 0;
+        }
+
+        Save Mangbv;
+        ret = Mangbv.LoadSave(render_, "img//save.png");
+        if (ret == false){
+            close();
+            return 0;
+        }
+        high_score = Get_highscore();
+        while(!colum_.Getdie()){
+            while (SDL_PollEvent(&event_) != 0)
+            {
+                if (event_.type == SDL_QUIT)
+                {
+                    quit = true;
+                }
+                if(event_.type == SDL_KEYDOWN)
+                    if(event_.key.keysym.sym == SDLK_SPACE){
+                            is_paused = true;
+                    }
+                bird.HandleInputAction(event_);
+            }
+            bk_grd.Render(render_);
+            bird.Run();
+
+            colum_.SetBird_rect(bird.GetRect());
+            colum_.Setsaved_(bird.GetIs_saved());
+            colum_.ShowList(render_);
+            bird.SetIs_saved(colum_.Getsaved_());
+            bird.SetRect_(colum_.GetBird_rect().x, colum_.GetBird_rect().y);
+
+            if(colum_.Getdie()){
+                bird.Rendertext3(render_);
+            }else{
+                bird.RenderBird(render_);
+            }
+
+            text_score.RenderRectScore(render_);
+            int diem = colum_.Getscore();
+            std::string diemso = std::to_string(diem);
+            text_score.Settext(diemso.c_str());
+            text_score.renderTexture(render_, SCREEN_WIDTH/2, 2, 50, 50);
+
+            if(diem >= 10){
+                SDL_Rect rectsave;
+                SDL_Rect birdrect = bird.GetRect();
+                if(!Mangbv.GetIs_Looted()){
+                    std::vector<DoubleColum*> listcolum = colum_.GetList();
+                    if(colum_.Get_just_lose_save()){
+                        index = colum_.Getend_list();
+                        colum_.Set_just_lose_save(false);
+                    }
+                    rectsave = listcolum[index]->GetPassrect();
+                    rectsave = {rectsave.x-128, rectsave.y + 40, 70, 70};
+                    if(SDL_HasIntersection(&rectsave, &birdrect)){
+                        Mix_Chunk* gChunk = Mix_LoadWAV("sound//vobong.wav");
+                        if(gChunk != nullptr){
+                            Mix_PlayChannel(-1, gChunk, 0);
+                        }
+                        Mangbv.SetIs_Looted(true);
+                        bird.SetIs_saved(true);
+                    }
+                    Mangbv.SetRectSave(rectsave);
+                    Mangbv.ShowSave(render_);
+                }
+                else if(bird.GetIs_saved()){
+
+                    rectsave = {birdrect.x - 10, birdrect.y - 20, 90, 85};
+                    Mangbv.SetRectSave(rectsave);
+                    Mangbv.ShowSave(render_);
+                }
+                Mangbv.SetIs_Looted(bird.GetIs_saved());
+            }
+
+            if(diem > 10) colum_.List_UpDown();
+
+            if(is_paused){
+                colum_.pauseMusic();
+                int ret_pause = pause.RenderPause(render_);
+                if(ret_pause == CONTINUE){
+                    is_paused = false;
+                    colum_.resumeMusic();
+                }
+                if(ret_pause == -1){
+                    quit = true;
+                    break;
+                }
+                if(ret_pause == EXIT){
+                    is_paused = false;
+                    colum_.Setdie(true);
+                    colum_.freeMusic();
+                }
+            }
+
+            SDL_RenderPresent(render_);
+            if(colum_.Getdie()){
+                SDL_Delay(1000);
+                if(diem > high_score){
+                    high_score = diem;
+                    std::ofstream file("high_score.txt");
+                    file << diem;
+                    file.close();
+                }
+                std::string highscore = "High Score: " + std::to_string(high_score);
+                std::string score = "Score: " + diemso;
+                int ret_menu = menu.ShowMenu(render_,"img//gameover.png", "Play Again", "Exit", score.c_str(), highscore.c_str());
+                if(ret_menu == -1){
+                    quit = true;
+                    continue;
+                }
+                if(ret_menu == 1){
+                    pause.FreePause();
+                    bird.FreeBird();
+                    colum_.FreeColumList();
+                    text_score.FreeText();
+                    Mangbv.FreeSave();
+                    menu_show = false;
+                }
             }
         }
     }
-    pause.FreePause();
-    bird.FreeBird();
-    colum_.FreeColumList();
-    text_score.FreeText();
-    Mangbv.FreeSave();
     close();
     return 0;
 }

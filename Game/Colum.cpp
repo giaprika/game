@@ -272,11 +272,6 @@ void ColumList::SetBird_rect(SDL_Rect bird_rect)
     Bird_rect = bird_rect;
 }
 
-Save::Save()
-{
-    is_looted = false;
-}
-
 void ColumList::FreeColumList()
 {
     for(int i=0; i<(int)Colum_list.size(); i++){
@@ -291,6 +286,11 @@ void ColumList::List_UpDown()
     for(int i=0; i<(int)Colum_list.size(); i++){
         Colum_list[i]->UpDown_(is_upping[i]);
     }
+}
+
+Save::Save()
+{
+    is_looted = false;
 }
 
 bool Save::LoadSave(SDL_Renderer* render_, std::string filename)
