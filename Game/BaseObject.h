@@ -17,7 +17,11 @@ public:
     void Free();
     void SetRect(const int& x, const int& y);
     SDL_Rect GetRect() const {return rect_;}
-    void Set_Rect(SDL_Rect res) {rect_ = res;}
+    void Run_coin() {rect_.x -= 3;}
+    bool check_coin_back(){
+        if(rect_.x + rect_.w <=0) return true;
+        return false;
+    }
 };
 
 #endif // BASEOBJECT_H_INCLUDED

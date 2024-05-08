@@ -3,6 +3,7 @@
 
 int pos[7]={1000, 1300, 1600, 1850, 2150, 2400, 2650};
 bool is_upping[7] = {true, true, false, true, false, false, true};
+bool just_setcoin[7] = {false, false, false, false, false, false, false};
 Colum::Colum()
 {
     x_pos_=0;
@@ -167,6 +168,7 @@ ColumList::ColumList()
     saved_ = false;
     Bird_rect = {0, 0, 0, 0};
     just_lose_save = false;
+    cnt_coin = 0;
 }
 
 bool ColumList::InitColumList(SDL_Renderer* render_)
@@ -205,6 +207,39 @@ bool ColumList::InitColumList(SDL_Renderer* render_)
     else return false;
 }
 
+bool ColumList::init_coin(SDL_Renderer* render_)
+{
+    coin.loadImage(render_, "img//coin.png");
+    coin.SetRect(30, 100);
+
+    BaseObject* coin1 = new BaseObject();
+    BaseObject* coin2 = new BaseObject();
+    BaseObject* coin3 = new BaseObject();
+    BaseObject* coin4 = new BaseObject();
+    BaseObject* coin5 = new BaseObject();
+    BaseObject* coin6 = new BaseObject();
+    BaseObject* coin7 = new BaseObject();
+
+    bool ret1 = coin1->loadImage(render_, "img//coin.png");
+    bool ret2 = coin2->loadImage(render_, "img//coin.png");
+    bool ret3 = coin3->loadImage(render_, "img//coin.png");
+    bool ret4 = coin4->loadImage(render_, "img//coin.png");
+    bool ret5 = coin5->loadImage(render_, "img//coin.png");
+    bool ret6 = coin6->loadImage(render_, "img//coin.png");
+    bool ret7 = coin7->loadImage(render_, "img//coin.png");
+
+    coin_list.push_back(coin1);
+    coin_list.push_back(coin2);
+    coin_list.push_back(coin3);
+    coin_list.push_back(coin4);
+    coin_list.push_back(coin5);
+    coin_list.push_back(coin6);
+    coin_list.push_back(coin7);
+
+    if(!ret1 || !ret2 || !ret3 || !ret4 || !ret5 || !ret6 || !ret7) return false;
+    return true;
+}
+
 void ColumList::ShowList(SDL_Renderer* render_)
 {
     if (Mix_PlayingMusic() == 0){
@@ -221,9 +256,27 @@ void ColumList::ShowList(SDL_Renderer* render_)
 
     for(int i=0; i<(int)Colum_list.size(); i++){
         DoubleColum* cl = Colum_list[i];
+        BaseObject* coin_current = coin_list[i];
         cl->SetPassrect();
         cl->Move();
-
+        SDL_Rect res = cl->GetPassrect();//
+        if(!just_setcoin[i]){
+            coin_current->SetRect(res.x + 40 + rand()%20, res.y + res.h + rand()%400-300);
+            just_setcoin[i] = true;
+        }//
+        coin_current->Run_coin();
+        if(coin_current->check_coin_back()){
+            just_setcoin[i] = false;
+        }
+        SDL_Rect res_coin = coin_list[i]->GetRect();
+        if(SDL_HasIntersection(&res_coin, &Bird_rect)){
+            Mix_Chunk* gChunk = Mix_LoadWAV("sound//claim.wav");
+            if(gChunk != nullptr){
+                Mix_PlayChannel(-1, gChunk, 0);
+            }
+            cnt_coin++;
+            coin_current->SetRect(res_coin.x, -100);
+        }
         if(cl->Getisback_()){
             DoubleColum* endcl = Colum_list[end_list];
             SDL_Rect end_rect = endcl->GetTopRect();
@@ -241,7 +294,7 @@ void ColumList::ShowList(SDL_Renderer* render_)
                 if(gChunk != nullptr){
                     Mix_PlayChannel(-1, gChunk, 0);
                 }
-                SDL_Rect res = cl->GetPassrect();
+//                SDL_Rect res = cl->GetPassrect();
                 Bird_rect.y = res.y + 50;
                 SDL_Delay(500);
                 saved_ = false;
@@ -264,7 +317,9 @@ void ColumList::ShowList(SDL_Renderer* render_)
             }
         }
         cl->ShowDoubleColum(render_);
+        coin_list[i]->Render(render_);
     }
+//    coin.Render(render_);
 }
 
 void ColumList::SetBird_rect(SDL_Rect bird_rect)

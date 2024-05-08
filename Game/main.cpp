@@ -93,6 +93,11 @@ int main(int argc, char* argv[])
             close();
             return 0;
         }
+        ret = colum_.init_coin(render_);
+        if(!ret){
+            close();
+            return 0;
+        }
 
         Text text_score;
         ret = text_score.loadFont("fonttt.ttf", 40);
@@ -100,6 +105,10 @@ int main(int argc, char* argv[])
             close();
             return 0;
         }
+
+        Text text_coin;
+        ret = text_coin.loadFont("fonttt.ttf", 40);
+        if(ret==false) return 0;
 
         Save Mangbv;
         ret = Mangbv.LoadSave(render_, "img//save.png");
@@ -136,11 +145,17 @@ int main(int argc, char* argv[])
                 bird.RenderBird(render_);
             }
 
+            colum_.Render_coin_base(render_);
             text_score.RenderRectScore(render_);
             int diem = colum_.Getscore();
             std::string diemso = std::to_string(diem);
             text_score.Settext(diemso.c_str());
             text_score.renderTexture(render_, SCREEN_WIDTH/2, 2, 50, 50);
+
+            int so_coin = colum_.Get_cnt_coin();
+            std::string number_coin = std::to_string(so_coin);
+            text_coin.Settext(number_coin.c_str());
+            text_coin.renderTexture(render_, 60, 95, 40, 40);
 
             if(diem >= 10){
                 SDL_Rect rectsave;
@@ -206,6 +221,11 @@ int main(int argc, char* argv[])
                 std::string score = "Score: " + diemso;
                 int ret_menu = menu.ShowMenu(render_,"img//gameover.png", "Play Again", "Exit", score.c_str(), highscore.c_str());
                 if(ret_menu == -1){
+                    pause.FreePause();
+                    bird.FreeBird();
+                    colum_.FreeColumList();
+                    text_score.FreeText();
+                    Mangbv.FreeSave();
                     quit = true;
                     continue;
                 }

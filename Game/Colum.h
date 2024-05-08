@@ -54,6 +54,7 @@ class ColumList
 {
 private:
     std::vector<DoubleColum*> Colum_list;
+    std::vector<BaseObject*> coin_list;
     int end_list;
     SDL_Rect Bird_rect;
     bool die;
@@ -61,6 +62,8 @@ private:
     int score;
     bool saved_;
     bool just_lose_save;
+    BaseObject coin;
+    int cnt_coin;
 
 public:
     ColumList();
@@ -83,6 +86,10 @@ public:
     bool Get_just_lose_save() const {return just_lose_save;}
     void Set_just_lose_save(bool res) {just_lose_save = res;}
     int Getend_list() const {return end_list;}
+    bool init_coin(SDL_Renderer* render_);
+    void render_coin(SDL_Renderer* render_);
+    int Get_cnt_coin() const {return cnt_coin;}
+    void Render_coin_base(SDL_Renderer* render_) {coin.Render(render_);}
 };
 
 class Save : BaseObject

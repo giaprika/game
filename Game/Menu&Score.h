@@ -40,6 +40,7 @@ public:
 class Pause
 {
 private:
+    BaseObject pause_game;
     BaseObject continue_;
     BaseObject exit_;
     Mix_Chunk* gchunk_;

@@ -278,20 +278,20 @@ Pause::Pause()
 
 int Pause::RenderPause(SDL_Renderer* render_)
 {
-    bool ret1 = continue_.loadImage(render_, "img//continue.png");
-    bool ret2 = exit_.loadImage(render_, "img//exit.png");
-    if(!ret1 || !ret2) return -1;
+    bool ret1 = continue_.loadImage(render_, "img//p1.png");
+    bool ret2 = exit_.loadImage(render_, "img//e1.png");
+    bool ret3 = pause_game.loadImage(render_, "img//pause.png");
+    if(!ret1 || !ret2 || !ret3) return -1;
     continue_.SetRect(SCREEN_WIDTH/2 - 150, SCREEN_HEIGHT/2-50);
     exit_.SetRect(SCREEN_WIDTH/2 + 50, SCREEN_HEIGHT/2-50);
+    pause_game.SetRect(SCREEN_WIDTH/2 - 250 , SCREEN_HEIGHT/2 - 145);
     int x;
     int y;
-    SDL_Rect res_continue = {SCREEN_WIDTH/2 - 160, SCREEN_HEIGHT/2 - 60, 120, 120};
-    SDL_Rect res_exit = {SCREEN_WIDTH/2 + 40, SCREEN_HEIGHT/2 - 60, 120, 120};
-    SDL_Rect res1 = {SCREEN_WIDTH/2 - 150, SCREEN_HEIGHT/2 - 50, 100, 100};
-    SDL_Rect res2 = {SCREEN_WIDTH/2 + 50, SCREEN_HEIGHT/2 -50, 100, 100};
     while(1){
+        pause_game.Render(render_);
         continue_.Render(render_);
         exit_.Render(render_);
+
         SDL_Rect rect_continue = continue_.GetRect();
         SDL_Rect rect_exit = exit_.GetRect();
         while(SDL_PollEvent(&event_)){
@@ -306,12 +306,12 @@ int Pause::RenderPause(SDL_Renderer* render_)
                     x = event_.motion.x;
                     y = event_.motion.y;
                     if(x>=rect_continue.x && x<=rect_continue.x+rect_continue.w && y>=rect_continue.y && y<=rect_continue.y+rect_continue.h){
-                        continue_.Set_Rect(res_continue);
+                        ret1 = continue_.loadImage(render_, "img//p2.png");
                     }else if(x>=rect_exit.x && x<=rect_exit.x+rect_exit.w && y>=rect_exit.y && y<=rect_exit.y+rect_exit.h){
-                        exit_.Set_Rect(res_exit);
+                        ret2 = exit_.loadImage(render_, "img//e2.png");
                     }else{
-                        continue_.Set_Rect(res1);
-                        exit_.Set_Rect(res2);
+                        ret1 = continue_.loadImage(render_, "img//p1.png");
+                        ret2 = exit_.loadImage(render_, "img//e1.png");
                     }
                     break;
                 case SDL_MOUSEBUTTONDOWN:
