@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
         int ret_menu;
         money = Get_From_File("money.txt");
         if(menu_show){
-            ret_menu = menu.ShowMenu(render_,"img//MENU.png", "Play Game", "Exit", "", "");
+            ret_menu = menu.ShowMenu(render_,"img//MENU.png", "Play Game", "Exit", "", "", "");
             if(ret_menu == -1){
                 close();
                 return 0;
@@ -224,6 +224,7 @@ int main(int argc, char* argv[])
             if(colum_.Getdie()){
                 SDL_Delay(1000);
                 money += so_coin;
+                std::string money_ = std::to_string(money);
                 Write_To_File("money.txt", money);
                 if(diem > high_score){
                     high_score = diem;
@@ -231,7 +232,7 @@ int main(int argc, char* argv[])
                 }
                 std::string highscore = "High Score: " + std::to_string(high_score);
                 std::string score = "Score: " + diemso;
-                int ret_menu = menu.ShowMenu(render_,"img//gameover.png", "Play Again", "Exit", score.c_str(), highscore.c_str());
+                int ret_menu = menu.ShowMenu(render_,"img//gameover.png", "Play Again", "Exit", score.c_str(), highscore.c_str(), money_.c_str());
                 if(ret_menu == -1){
                     pause.FreePause();
                     bird.FreeBird();

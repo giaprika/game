@@ -62,7 +62,8 @@ bool Menu::loadFont(const char* filename)
     bool ret6 = text6.loadFont(filename, 30);
 }
 
-int Menu::ShowMenu(SDL_Renderer* render_, std::string filename, const char* text1_, const char* text2_, const char* text3_, const char* text4_)
+int Menu::ShowMenu(SDL_Renderer* render_, std::string filename, const char* text1_, const char* text2_,
+                   const char* text3_, const char* text4_, const char* text5_)
 {
     bool ret = BaseObject::loadImage(render_, filename);
     if(!ret) return -1;
@@ -70,9 +71,11 @@ int Menu::ShowMenu(SDL_Renderer* render_, std::string filename, const char* text
     text2.Settext(text2_);
     text3.Settext(text3_);
     text4.Settext(text4_);
+    text5.Settext(text5_);
 
     text3.SettextColor(0, 255, 255);
     text4.SettextColor(255, 255, 0);
+    text5.SettextColor(255, 255, 0);
 
     BaseObject::Render(render_);
     int x=0;
@@ -95,6 +98,7 @@ int Menu::ShowMenu(SDL_Renderer* render_, std::string filename, const char* text
         text2.renderTexture(render_, 780, 300, 200, 80);
         text3.renderTexture(render_, 780, 180, 400, 80);
         text4.renderTexture(render_, 130, 180, 500, 80);
+        text5.renderTexture(render_, 580, 480, 80, 80);
         while(SDL_PollEvent(&event_))
         {
             switch(event_.type)
