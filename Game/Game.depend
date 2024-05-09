@@ -42,7 +42,7 @@
 	<SDL_ttf.h>
 	<bits/stdc++.h>
 
-1715265309 source:d:\gamegithub\game\game\baseobject.cpp
+1715266662 source:d:\gamegithub\game\game\baseobject.cpp
 	"BaseObject.h"
 	"Define.h"
 
@@ -53,7 +53,7 @@
 1715226342 d:\gamegithub\game\game\colum.h
 	"BaseObject.h"
 
-1715240643 source:d:\gamegithub\game\game\main.cpp
+1715272323 source:d:\gamegithub\game\game\main.cpp
 	"Define.h"
 	"BaseObject.h"
 	"Bird.h"

@@ -52,12 +52,11 @@ int main(int argc, char* argv[])
         if(menu_show){
             ret_menu = menu.ShowMenu(render_,"img//MENU.png", "Play Game", "Exit", "", "", "");
             if(ret_menu == -1){
+                menu.FreeMenu();
                 close();
                 return 0;
             }
         }
-        Pause pause;
-        Bird bird;
         if(ret_menu != -1){
             ret_menu = TO_BACK;
             while(ret_menu == TO_BACK){
@@ -70,9 +69,11 @@ int main(int argc, char* argv[])
             }
         }
         if(ret_menu == -1){
+            menu.FreeMenu();
             close();
             return 0;
         }
+        Bird bird;
         bool ret1, ret2;
         if(ret_menu == BIRD_1){
             ret1 = bk_grd.loadImage(render_, "img//bk_ground1.jpg");
@@ -87,6 +88,8 @@ int main(int argc, char* argv[])
             ret2 = bird.LoadBird(render_, "img//bird3_1.png", "img//bird3_2.png", "img//bird3_3.png");
         }
         if(!ret1 || !ret2){
+            menu.FreeMenu();
+            bird.FreeBird();
             close();
             return 0;
         }
@@ -95,11 +98,17 @@ int main(int argc, char* argv[])
         ColumList colum_;
         bool ret = colum_.InitColumList(render_);
         if(ret == false){
+            menu.FreeMenu();
+            bird.FreeBird();
+            colum_.FreeColumList();
             close();
             return 0;
         }
         ret = colum_.init_coin(render_);
         if(!ret){
+            menu.FreeMenu();
+            bird.FreeBird();
+            colum_.FreeColumList();
             close();
             return 0;
         }
@@ -107,21 +116,40 @@ int main(int argc, char* argv[])
         Text text_score;
         ret = text_score.loadFont("fonttt.ttf", 40);
         if(ret==false){
+            menu.FreeMenu();
+            bird.FreeBird();
+            colum_.FreeColumList();
+            text_score.FreeText();
             close();
             return 0;
         }
 
         Text text_coin;
         ret = text_coin.loadFont("fonttt.ttf", 40);
-        if(ret==false) return 0;
+        if(ret==false){
+            menu.FreeMenu();
+            bird.FreeBird();
+            colum_.FreeColumList();
+            text_score.FreeText();
+            text_coin.FreeText();
+            close();
+            return 0;
+        }
         text_coin.SettextColor(150, 80, 0);
 
         Save Mangbv;
         ret = Mangbv.LoadSave(render_, "img//save.png");
         if (ret == false){
+            menu.FreeMenu();
+            bird.FreeBird();
+            colum_.FreeColumList();
+            text_score.FreeText();
+            text_coin.FreeText();
+            Mangbv.FreeSave();
             close();
             return 0;
         }
+        Pause pause;
         high_score = Get_From_File("high_score.txt");
         while(!colum_.Getdie()){
             while (SDL_PollEvent(&event_) != 0)
@@ -205,12 +233,15 @@ int main(int argc, char* argv[])
                     colum_.resumeMusic();
                 }
                 if(ret_pause == -1){
-                    pause.FreePause();
+                    menu.FreeMenu();
                     bird.FreeBird();
                     colum_.FreeColumList();
                     text_score.FreeText();
+                    text_coin.FreeText();
                     Mangbv.FreeSave();
-                    quit = true;
+                    pause.FreePause();
+                    close();
+                    return 0;
                     break;
                 }
                 if(ret_pause == EXIT){
@@ -234,19 +265,23 @@ int main(int argc, char* argv[])
                 std::string score = "Score: " + diemso;
                 int ret_menu = menu.ShowMenu(render_,"img//gameover.png", "Play Again", "Exit", score.c_str(), highscore.c_str(), money_.c_str());
                 if(ret_menu == -1){
-                    pause.FreePause();
+                    menu.FreeMenu();
                     bird.FreeBird();
                     colum_.FreeColumList();
                     text_score.FreeText();
+                    text_coin.FreeText();
                     Mangbv.FreeSave();
-                    quit = true;
-                    continue;
+                    pause.FreePause();
+                    close();
+                    return 0;
                 }
                 if(ret_menu == 1){
+                    menu.FreeMenu();
                     pause.FreePause();
                     bird.FreeBird();
                     colum_.FreeColumList();
                     text_score.FreeText();
+                    text_coin.FreeText();
                     Mangbv.FreeSave();
                     menu_show = false;
                 }
