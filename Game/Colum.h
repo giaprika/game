@@ -63,6 +63,7 @@ private:
     bool saved_;
     bool just_lose_save;
     BaseObject coin;
+    BaseObject text_coin;
     int cnt_coin;
 
 public:
@@ -90,6 +91,7 @@ public:
     void render_coin(SDL_Renderer* render_);
     int Get_cnt_coin() const {return cnt_coin;}
     void Render_coin_base(SDL_Renderer* render_) {coin.Render(render_);}
+    void Render_text_coin(SDL_Renderer* render_) {text_coin.Render(render_);}
 };
 
 class Save : BaseObject

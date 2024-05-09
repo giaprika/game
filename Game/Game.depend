@@ -34,7 +34,7 @@
 1715176018 d:\gamegithub\game\game\baseobject.h
 	"Define.h"
 
-1715223967 d:\gamegithub\game\game\define.h
+1715238284 d:\gamegithub\game\game\define.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_net.h>
@@ -46,14 +46,14 @@
 	"BaseObject.h"
 	"Define.h"
 
-1715177130 source:d:\gamegithub\game\game\colum.cpp
+1715238284 source:d:\gamegithub\game\game\colum.cpp
 	"BaseObject.h"
 	"Colum.h"
 
-1715176796 d:\gamegithub\game\game\colum.h
+1715226342 d:\gamegithub\game\game\colum.h
 	"BaseObject.h"
 
-1715221025 source:d:\gamegithub\game\game\main.cpp
+1715238618 source:d:\gamegithub\game\game\main.cpp
 	"Define.h"
 	"BaseObject.h"
 	"Bird.h"
@@ -73,7 +73,7 @@
 	"Define.h"
 	"BaseObject.h"
 
-1715225000 source:d:\gamegithub\game\game\menu&score.cpp
+1715238284 source:d:\gamegithub\game\game\menu&score.cpp
 	"Menu&Score.h"
 
 1715220889 d:\gamegithub\game\game\getfromfile.h

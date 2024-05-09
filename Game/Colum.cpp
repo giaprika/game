@@ -211,6 +211,8 @@ bool ColumList::init_coin(SDL_Renderer* render_)
 {
     coin.loadImage(render_, "img//coin.png");
     coin.SetRect(30, 100);
+    text_coin.loadImage(render_, "img//text_coin.png");
+    text_coin.SetRect(10, 90);
 
     BaseObject* coin1 = new BaseObject();
     BaseObject* coin2 = new BaseObject();
@@ -334,6 +336,8 @@ void ColumList::FreeColumList()
         delete Colum_list[i];
     }
     Colum_list.clear();
+    coin.Free();
+    text_coin.Free();
 }
 
 void ColumList::List_UpDown()

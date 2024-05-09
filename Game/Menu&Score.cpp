@@ -91,10 +91,10 @@ int Menu::ShowMenu(SDL_Renderer* render_, std::string filename, const char* text
             text1.SettextColor(255, 255, 255);
             text2.SettextColor(255, 255, 255);
         }
-        text1.renderTexture(render_, 230, 300, 400, 100);
-        text2.renderTexture(render_, 780, 300, 200, 100);
-        text3.renderTexture(render_, 780, 180, 400, 100);
-        text4.renderTexture(render_, 130, 180, 500, 100);
+        text1.renderTexture(render_, 230, 300, 400, 80);
+        text2.renderTexture(render_, 780, 300, 200, 80);
+        text3.renderTexture(render_, 780, 180, 400, 80);
+        text4.renderTexture(render_, 130, 180, 500, 80);
         while(SDL_PollEvent(&event_))
         {
             switch(event_.type)
@@ -105,12 +105,12 @@ int Menu::ShowMenu(SDL_Renderer* render_, std::string filename, const char* text
             case SDL_MOUSEBUTTONDOWN:
                 x = event_.button.x;
                 y = event_.button.y;
-                if(x>=780 && x<=1080 && y>=300 && y<=400){
+                if(x>=780 && x<=1080 && y>=300 && y<=380){
                     Mix_PlayChannel(-1, _gchunk_, 0);
                     BaseObject::Free();
                     return -1;
                 }
-                if(x>=230 && x<=630 && y>=300 && y<=400){
+                if(x>=230 && x<=630 && y>=300 && y<=380){
                     Mix_PlayChannel(-1, _gchunk_, 0);
                     BaseObject::Free();
                     return 1;
@@ -399,6 +399,8 @@ void Menu::FreeMenu()
     text2.FreeText();
     text3.FreeText();
     text4.FreeText();
+    text5.FreeText();
+    text6.FreeText();
     Mix_FreeChunk(_gchunk_);
 }
 

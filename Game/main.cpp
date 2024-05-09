@@ -114,6 +114,7 @@ int main(int argc, char* argv[])
         Text text_coin;
         ret = text_coin.loadFont("fonttt.ttf", 40);
         if(ret==false) return 0;
+        text_coin.SettextColor(150, 80, 0);
 
         Save Mangbv;
         ret = Mangbv.LoadSave(render_, "img//save.png");
@@ -150,6 +151,7 @@ int main(int argc, char* argv[])
                 bird.RenderBird(render_);
             }
 
+            colum_.Render_text_coin(render_);
             colum_.Render_coin_base(render_);
             text_score.RenderRectScore(render_);
             int diem = colum_.Getscore();
@@ -203,6 +205,11 @@ int main(int argc, char* argv[])
                     colum_.resumeMusic();
                 }
                 if(ret_pause == -1){
+                    pause.FreePause();
+                    bird.FreeBird();
+                    colum_.FreeColumList();
+                    text_score.FreeText();
+                    Mangbv.FreeSave();
                     quit = true;
                     break;
                 }
