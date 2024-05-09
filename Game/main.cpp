@@ -3,6 +3,7 @@
 #include "Bird.h"
 #include "Colum.h"
 #include "Menu&Score.h"
+#include "GetFromFile.h"
 #include <fstream>
 bool Init()
 {
@@ -30,14 +31,7 @@ void close()
 }
 
 int high_score;
-int Get_highscore()
-{
-    std::ifstream file("high_score.txt");
-    int n;
-    file >> n;
-    file.close();
-    return n;
-}
+int money;
 
 int main(int argc, char* argv[])
 {
@@ -51,7 +45,10 @@ int main(int argc, char* argv[])
     bool menu_show = true;
     while(!quit){
         Menu menu;
+        bool ret_ = menu.loadFont("font.ttf");
+        if(!ret_) quit = true;
         int ret_menu;
+        money = Get_From_File("money.txt");
         if(menu_show){
             ret_menu = menu.ShowMenu(render_,"img//MENU.png", "Play Game", "Exit", "", "");
             if(ret_menu == -1){
@@ -64,8 +61,12 @@ int main(int argc, char* argv[])
         if(ret_menu != -1){
             ret_menu = TO_BACK;
             while(ret_menu == TO_BACK){
-                ret_menu = menu.ChooseBird(render_, "Bird 1", "Bird 2", "Exit", "Rule");
+                bird2_ = Get_From_File("bird2.txt");
+                bird3_ = Get_From_File("bird3.txt");
+                ret_menu = menu.ChooseBird(render_, "Bird 1", "Bird 2", "Exit", "Rule", "Bird 3", "Shop", bird2_, bird3_);
                 if(ret_menu == TO_BACK) ret_menu = menu.ShowRule(render_, "Exit", "Back");
+                if(ret_menu == SHOP) ret_menu = menu.ShowShop(render_, "Back", money, bird2_, bird3_);
+                Write_To_File("money.txt", money);
             }
         }
         if(ret_menu == -1){
@@ -80,6 +81,10 @@ int main(int argc, char* argv[])
         if(ret_menu == BIRD_2){
             ret1 = bk_grd.loadImage(render_, "img//bk_ground2.png");
             ret2 = bird.LoadBird(render_, "img//bird2_1.png", "img//bird2_2.png", "img//bird2_3.png");
+        }
+        if(ret_menu == BIRD_3){
+            ret1 = bk_grd.loadImage(render_, "img//bk_ground2.png");
+            ret2 = bird.LoadBird(render_, "img//bird3_1.png", "img//bird3_2.png", "img//bird3_3.png");
         }
         if(!ret1 || !ret2){
             close();
@@ -116,7 +121,7 @@ int main(int argc, char* argv[])
             close();
             return 0;
         }
-        high_score = Get_highscore();
+        high_score = Get_From_File("high_score.txt");
         while(!colum_.Getdie()){
             while (SDL_PollEvent(&event_) != 0)
             {
@@ -211,11 +216,11 @@ int main(int argc, char* argv[])
             SDL_RenderPresent(render_);
             if(colum_.Getdie()){
                 SDL_Delay(1000);
+                money += so_coin;
+                Write_To_File("money.txt", money);
                 if(diem > high_score){
                     high_score = diem;
-                    std::ofstream file("high_score.txt");
-                    file << diem;
-                    file.close();
+                    Write_To_File("high_score.txt", diem);
                 }
                 std::string highscore = "High Score: " + std::to_string(high_score);
                 std::string score = "Score: " + diemso;

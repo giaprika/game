@@ -16,9 +16,16 @@ static SDL_Renderer* render_ = NULL;
 static SDL_Event event_;
 static bool is_paused = false;
 static int index = 6;
-#define BIRD_1  1
-#define BIRD_2  2
-#define TO_BACK 3
-#define CONTINUE 4
-#define EXIT 5
+static int bird2_;
+static int bird3_;
+#define BIRD_1 1
+#define BIRD_2 2
+#define BIRD_3 3
+#define TO_BACK 4
+#define CONTINUE 5
+#define EXIT 6
+#define SHOP 7
+#define PRICE_BIRD2 100
+#define PRICE_BIRD3 500
+
 #endif // DEFINE_H_INCLUDED
