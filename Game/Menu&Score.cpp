@@ -75,7 +75,7 @@ int Menu::ShowMenu(SDL_Renderer* render_, std::string filename, const char* text
 
     text3.SettextColor(0, 255, 255);
     text4.SettextColor(255, 255, 0);
-    text5.SettextColor(255, 255, 0);
+    text5.SettextColor(150, 80, 0);
 
     BaseObject::Render(render_);
     int x=0;
@@ -98,7 +98,7 @@ int Menu::ShowMenu(SDL_Renderer* render_, std::string filename, const char* text
         text2.renderTexture(render_, 780, 300, 200, 80);
         text3.renderTexture(render_, 780, 180, 400, 80);
         text4.renderTexture(render_, 130, 180, 500, 80);
-        text5.renderTexture(render_, 580, 480, 80, 80);
+        text5.renderTexture(render_, 640, 470, 80, 80);
         while(SDL_PollEvent(&event_))
         {
             switch(event_.type)
@@ -292,14 +292,16 @@ int Menu::ShowShop(SDL_Renderer* render_, const char* text_, int& coin_money, in
     bool ret = BaseObject::loadImage(render_, "img//shop.png");
     if(!ret) return -1;
     BaseObject::Render(render_);
+
     int x, y;
     text3.Settext(text_);
     while(1){
         std::string money_ = std::to_string(coin_money);
         text4.Settext(money_.c_str());
+        text4.SettextColor(150, 80, 0);
 
         text3.renderTexture(render_, 930, 520, 200, 80);
-        text4.renderTexture(render_, 120, 520, 80, 80);
+        text4.renderTexture(render_, 140, 520, 80, 80);
 
         std::ifstream file2("bird2.txt");
         file2 >> bird2_;
