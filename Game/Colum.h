@@ -69,7 +69,7 @@ private:
 public:
     ColumList();
     bool InitColumList(SDL_Renderer* render_);
-    void ShowList(SDL_Renderer* render_);
+    void ShowList(SDL_Renderer* render_, int& mang);
     void SetBird_rect(SDL_Rect bird_rect);
     std::vector<DoubleColum*> GetList() {return Colum_list;}
     bool Getdie() const {return die;}

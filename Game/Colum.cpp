@@ -242,7 +242,7 @@ bool ColumList::init_coin(SDL_Renderer* render_)
     return true;
 }
 
-void ColumList::ShowList(SDL_Renderer* render_)
+void ColumList::ShowList(SDL_Renderer* render_, int& mang)
 {
     if (Mix_PlayingMusic() == 0){
            Mix_PlayMusic( music, -1 );
@@ -296,18 +296,24 @@ void ColumList::ShowList(SDL_Renderer* render_)
                 if(gChunk != nullptr){
                     Mix_PlayChannel(-1, gChunk, 0);
                 }
-//                SDL_Rect res = cl->GetPassrect();
                 Bird_rect.y = res.y + 50;
                 SDL_Delay(500);
                 saved_ = false;
                 just_lose_save = true;
             }else{
-                die = true;
+                mang--;
                 Mix_Chunk* gChunk = Mix_LoadWAV("sound//collide.wav");
                 if (gChunk != nullptr) {
                     Mix_PlayChannel( -1, gChunk, 0 );
                 }
-                Mix_FreeMusic(music);
+                if(mang>0){
+                    Bird_rect.y = res.y + 50;
+                    SDL_Delay(500);
+                }
+                if(mang==0){
+                    die = true;
+                    Mix_FreeMusic(music);
+                }
             }
         }
         if(cl->CheckPass(Bird_rect)){

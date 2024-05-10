@@ -4,6 +4,7 @@
 #include "Colum.h"
 #include "Menu&Score.h"
 #include "GetFromFile.h"
+#include "Live.h"
 #include <fstream>
 bool Init()
 {
@@ -32,6 +33,7 @@ void close()
 
 int high_score;
 int money;
+int so_mang;
 
 int main(int argc, char* argv[])
 {
@@ -78,14 +80,17 @@ int main(int argc, char* argv[])
         if(ret_menu == BIRD_1){
             ret1 = bk_grd.loadImage(render_, "img//bk_ground1.jpg");
             ret2 = bird.LoadBird(render_, "img//bird1_1.png", "img//bird1_2.png", "img//bird1_3.png");
+            so_mang = 1;
         }
         if(ret_menu == BIRD_2){
             ret1 = bk_grd.loadImage(render_, "img//bk_ground2.png");
             ret2 = bird.LoadBird(render_, "img//bird2_1.png", "img//bird2_2.png", "img//bird2_3.png");
+            so_mang = 2;
         }
         if(ret_menu == BIRD_3){
             ret1 = bk_grd.loadImage(render_, "img//bk_ground2.png");
             ret2 = bird.LoadBird(render_, "img//bird3_1.png", "img//bird3_2.png", "img//bird3_3.png");
+            so_mang = 3;
         }
         if(!ret1 || !ret2){
             menu.FreeMenu();
@@ -149,6 +154,21 @@ int main(int argc, char* argv[])
             close();
             return 0;
         }
+
+        Live lives;
+        ret = lives.InitHeart(render_);
+        if(ret == false){
+            menu.FreeMenu();
+            bird.FreeBird();
+            colum_.FreeColumList();
+            text_score.FreeText();
+            text_coin.FreeText();
+            Mangbv.FreeSave();
+            lives.FreeLive();
+            close();
+            return 0;
+        }
+
         Pause pause;
         high_score = Get_From_File("high_score.txt");
         while(!colum_.Getdie()){
@@ -169,9 +189,10 @@ int main(int argc, char* argv[])
 
             colum_.SetBird_rect(bird.GetRect());
             colum_.Setsaved_(bird.GetIs_saved());
-            colum_.ShowList(render_);
+            colum_.ShowList(render_, so_mang);
             bird.SetIs_saved(colum_.Getsaved_());
             bird.SetRect_(colum_.GetBird_rect().x, colum_.GetBird_rect().y);
+            lives.RenderHeart(render_, so_mang);
 
             if(colum_.Getdie()){
                 bird.Rendertext3(render_);
