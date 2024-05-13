@@ -31,9 +31,20 @@ void close()
     SDL_Quit();
 }
 
+void waitUntilKeyPressed()
+{
+    while (true) {
+        if ( SDL_PollEvent(&event_) != 0 &&
+             (event_.type == SDL_KEYDOWN || event_.type == SDL_QUIT) )
+            return;
+        SDL_Delay(100);
+    }
+}
+
 int high_score;
 int money;
 int so_mang;
+bool ready = false;
 
 int main(int argc, char* argv[])
 {
@@ -88,7 +99,7 @@ int main(int argc, char* argv[])
             so_mang = 2;
         }
         if(ret_menu == BIRD_3){
-            ret1 = bk_grd.loadImage(render_, "img//bk_ground2.png");
+            ret1 = bk_grd.loadImage(render_, "img//bk_ground3.jpg");
             ret2 = bird.LoadBird(render_, "img//bird3_1.png", "img//bird3_2.png", "img//bird3_3.png");
             so_mang = 3;
         }
@@ -102,15 +113,8 @@ int main(int argc, char* argv[])
 
         ColumList colum_;
         bool ret = colum_.InitColumList(render_);
-        if(ret == false){
-            menu.FreeMenu();
-            bird.FreeBird();
-            colum_.FreeColumList();
-            close();
-            return 0;
-        }
-        ret = colum_.init_coin(render_);
-        if(!ret){
+        bool rett = colum_.init_coin(render_);
+        if(ret == false || rett == false){
             menu.FreeMenu();
             bird.FreeBird();
             colum_.FreeColumList();
@@ -119,28 +123,24 @@ int main(int argc, char* argv[])
         }
 
         Text text_score;
-        ret = text_score.loadFont("fonttt.ttf", 40);
-        if(ret==false){
-            menu.FreeMenu();
-            bird.FreeBird();
-            colum_.FreeColumList();
-            text_score.FreeText();
-            close();
-            return 0;
-        }
-
         Text text_coin;
-        ret = text_coin.loadFont("fonttt.ttf", 40);
-        if(ret==false){
+        Text ready_;
+        ret = text_score.loadFont("fonttt.ttf", 40);
+        rett = text_coin.loadFont("fonttt.ttf", 40);
+        bool rettt = ready_.loadFont("font.ttf", 40);
+        if(ret==false || rett == false || rettt == false){
             menu.FreeMenu();
             bird.FreeBird();
             colum_.FreeColumList();
             text_score.FreeText();
             text_coin.FreeText();
+            ready_.FreeText();
             close();
             return 0;
         }
         text_coin.SettextColor(150, 80, 0);
+        ready_.Settext("Are you ready!");
+        ready_.SettextColor(180, 0, 30);
 
         Save Mangbv;
         ret = Mangbv.LoadSave(render_, "img//save.png");
@@ -150,6 +150,7 @@ int main(int argc, char* argv[])
             colum_.FreeColumList();
             text_score.FreeText();
             text_coin.FreeText();
+            ready_.FreeText();
             Mangbv.FreeSave();
             close();
             return 0;
@@ -163,6 +164,7 @@ int main(int argc, char* argv[])
             colum_.FreeColumList();
             text_score.FreeText();
             text_coin.FreeText();
+            ready_.FreeText();
             Mangbv.FreeSave();
             lives.FreeLive();
             close();
@@ -185,14 +187,15 @@ int main(int argc, char* argv[])
                 bird.HandleInputAction(event_);
             }
             bk_grd.Render(render_);
-            bird.Run();
 
+            bird.Run();
             colum_.SetBird_rect(bird.GetRect());
             colum_.Setsaved_(bird.GetIs_saved());
             colum_.ShowList(render_, so_mang);
             bird.SetIs_saved(colum_.Getsaved_());
             bird.SetRect_(colum_.GetBird_rect().x, colum_.GetBird_rect().y);
             lives.RenderHeart(render_, so_mang);
+
 
             if(colum_.Getdie()){
                 bird.Rendertext3(render_);
@@ -212,6 +215,15 @@ int main(int argc, char* argv[])
             std::string number_coin = std::to_string(so_coin);
             text_coin.Settext(number_coin.c_str());
             text_coin.renderTexture(render_, 60, 95, 40, 40);
+
+            if(!ready){
+                ready_.renderTexture(render_, SCREEN_WIDTH/2-200, SCREEN_HEIGHT/2-50, 400, 100);
+                colum_.pauseMusic();
+                SDL_RenderPresent(render_);
+                waitUntilKeyPressed();
+                colum_.resumeMusic();
+                ready = true;
+            }
 
             if(diem >= 10){
                 SDL_Rect rectsave;
@@ -259,6 +271,7 @@ int main(int argc, char* argv[])
                     colum_.FreeColumList();
                     text_score.FreeText();
                     text_coin.FreeText();
+                    ready_.FreeText();
                     Mangbv.FreeSave();
                     pause.FreePause();
                     close();
@@ -291,24 +304,28 @@ int main(int argc, char* argv[])
                     colum_.FreeColumList();
                     text_score.FreeText();
                     text_coin.FreeText();
+                    ready_.FreeText();
                     Mangbv.FreeSave();
                     pause.FreePause();
                     close();
                     return 0;
                 }
                 if(ret_menu == 1){
+                    ready = false;
                     menu.FreeMenu();
                     pause.FreePause();
                     bird.FreeBird();
                     colum_.FreeColumList();
                     text_score.FreeText();
                     text_coin.FreeText();
+                    ready_.FreeText();
                     Mangbv.FreeSave();
                     menu_show = false;
                 }
             }
         }
     }
+    bk_grd.Free();
     close();
     return 0;
 }

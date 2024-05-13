@@ -25,13 +25,13 @@
 1711555869 d:\game\bird.h
 	"BaseObject.h"
 
-1715096103 source:d:\gamegithub\game\game\bird.cpp
+1715606514 source:d:\gamegithub\game\game\bird.cpp
 	"Bird.h"
 
 1715096564 d:\gamegithub\game\game\bird.h
 	"BaseObject.h"
 
-1715266662 d:\gamegithub\game\game\baseobject.h
+1715607151 d:\gamegithub\game\game\baseobject.h
 	"Define.h"
 
 1715238284 d:\gamegithub\game\game\define.h
@@ -46,14 +46,14 @@
 	"BaseObject.h"
 	"Define.h"
 
-1715320779 source:d:\gamegithub\game\game\colum.cpp
+1715606514 source:d:\gamegithub\game\game\colum.cpp
 	"BaseObject.h"
 	"Colum.h"
 
 1715320454 d:\gamegithub\game\game\colum.h
 	"BaseObject.h"
 
-1715321119 source:d:\gamegithub\game\game\main.cpp
+1715574381 source:d:\gamegithub\game\game\main.cpp
 	"Define.h"
 	"BaseObject.h"
 	"Bird.h"
@@ -74,7 +74,7 @@
 	"Define.h"
 	"BaseObject.h"
 
-1715266521 source:d:\gamegithub\game\game\menu&score.cpp
+1715606514 source:d:\gamegithub\game\game\menu&score.cpp
 	"Menu&Score.h"
 
 1715220889 d:\gamegithub\game\game\getfromfile.h
@@ -84,6 +84,6 @@
 1715320454 d:\gamegithub\game\game\live.h
 	"BaseObject.h"
 
-1715320550 source:d:\gamegithub\game\game\live.cpp
+1715606514 source:d:\gamegithub\game\game\live.cpp
 	"Live.h"
 

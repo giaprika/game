@@ -11,7 +11,7 @@ protected:
     SDL_Rect rect_;
 public:
     BaseObject();
-    ~BaseObject();
+    virtual ~BaseObject();
     virtual bool loadImage(SDL_Renderer* render_, std::string filename);
     void Render(SDL_Renderer* render_);
     void Free();

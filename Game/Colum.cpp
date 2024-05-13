@@ -13,6 +13,7 @@ Colum::Colum()
 
 bool Colum::LoadColum(SDL_Renderer* render_, std::string file_name)
 {
+    FreeColum();
     bool ret = BaseObject::loadImage(render_, file_name);
     return ret;
 }
@@ -76,6 +77,7 @@ DoubleColum::DoubleColum()
 
 bool DoubleColum::InitColum(SDL_Renderer* render_, const int &xp)
 {
+    FreeDoubleColum();
     bool ret1= top_colum.LoadColum(render_, "img//top_colum.png");
     bool ret2= bottom_colum.LoadColum(render_, "img//bottom_colum.png");
 
@@ -173,6 +175,11 @@ ColumList::ColumList()
 
 bool ColumList::InitColumList(SDL_Renderer* render_)
 {
+    for(int i=0; i<(int)Colum_list.size(); i++){
+        Colum_list[i]->FreeDoubleColum();
+        delete Colum_list[i];
+    }
+
     music = Mix_LoadMUS("sound//nhacnen.mp3");
     if(music == nullptr) return false;
 
@@ -209,6 +216,13 @@ bool ColumList::InitColumList(SDL_Renderer* render_)
 
 bool ColumList::init_coin(SDL_Renderer* render_)
 {
+    for(int i=0; i<(int)coin_list.size(); i++){
+        coin_list[i]->Free();
+        delete coin_list[i];
+    }
+    coin.Free();
+    text_coin.Free();
+
     coin.loadImage(render_, "img//coin.png");
     coin.SetRect(30, 100);
     text_coin.loadImage(render_, "img//text_coin.png");
@@ -342,6 +356,11 @@ void ColumList::FreeColumList()
         delete Colum_list[i];
     }
     Colum_list.clear();
+    for(int i=0; i<(int)coin_list.size(); i++){
+        coin_list[i]->Free();
+        delete coin_list[i];
+    }
+    coin_list.clear();
     coin.Free();
     text_coin.Free();
 }
@@ -360,6 +379,7 @@ Save::Save()
 
 bool Save::LoadSave(SDL_Renderer* render_, std::string filename)
 {
+    FreeSave();
     bool ret = BaseObject::loadImage(render_, filename);
     return ret;
 }

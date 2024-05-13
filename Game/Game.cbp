@@ -40,6 +40,8 @@
 		<Unit filename="Colum.h" />
 		<Unit filename="Define.h" />
 		<Unit filename="GetFromFile.h" />
+		<Unit filename="Live.cpp" />
+		<Unit filename="Live.h" />
 		<Unit filename="Menu&amp;Score.cpp" />
 		<Unit filename="Menu&amp;Score.h" />
 		<Unit filename="main.cpp" />

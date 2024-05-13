@@ -11,6 +11,7 @@ Text::Text()
 
 bool Text::loadFont(const char* path, int size)
 {
+    FreeText();
     font = TTF_OpenFont(path, size);
     return (font != NULL);
 }
@@ -54,6 +55,13 @@ Menu::Menu()
 
 bool Menu::loadFont(const char* filename)
 {
+    text1.FreeText();
+    text2.FreeText();
+    text3.FreeText();
+    text4.FreeText();
+    text5.FreeText();
+    text6.FreeText();
+
     bool ret1 = text1.loadFont(filename, 30);
     bool ret2 = text2.loadFont(filename, 30);
     bool ret3 = text3.loadFont(filename, 30);
@@ -65,6 +73,7 @@ bool Menu::loadFont(const char* filename)
 int Menu::ShowMenu(SDL_Renderer* render_, std::string filename, const char* text1_, const char* text2_,
                    const char* text3_, const char* text4_, const char* text5_)
 {
+    BaseObject::Free();
     bool ret = BaseObject::loadImage(render_, filename);
     if(!ret) return -1;
     text1.Settext(text1_);
@@ -130,6 +139,7 @@ int Menu::ShowMenu(SDL_Renderer* render_, std::string filename, const char* text
 int Menu::ChooseBird(SDL_Renderer* render_, const char* text1_, const char* text2_, const char* text3_, const char* text4_,
                       const char* text5_, const char* text6_, int& bird2_, int &bird3_)
 {
+    BaseObject::Free();
     bool ret = BaseObject::loadImage(render_, "img//choosebirds.png");
     if(!ret) return -1;
     text1.Settext(text1_);
@@ -238,6 +248,7 @@ int Menu::ChooseBird(SDL_Renderer* render_, const char* text1_, const char* text
 
 int Menu::ShowRule(SDL_Renderer* render_, const char* text1_, const char* text2_)
 {
+    BaseObject::Free();
     bool ret = BaseObject::loadImage(render_, "img//rule.png");
     if(!ret) return -1;
     text1.Settext(text1_);
@@ -289,6 +300,7 @@ int Menu::ShowRule(SDL_Renderer* render_, const char* text1_, const char* text2_
 
 int Menu::ShowShop(SDL_Renderer* render_, const char* text_, int& coin_money, int& bird2_, int& bird3_)
 {
+    BaseObject::Free();
     bool ret = BaseObject::loadImage(render_, "img//shop.png");
     if(!ret) return -1;
     BaseObject::Render(render_);
@@ -417,6 +429,9 @@ Pause::Pause()
 
 int Pause::RenderPause(SDL_Renderer* render_)
 {
+    continue_.Free();
+    exit_.Free();
+
     bool ret1 = continue_.loadImage(render_, "img//p1.png");
     bool ret2 = exit_.loadImage(render_, "img//e1.png");
     bool ret3 = pause_game.loadImage(render_, "img//pause.png");
@@ -457,7 +472,7 @@ int Pause::RenderPause(SDL_Renderer* render_)
                         Mix_PlayChannel(-1, gchunk_, 0);
                         continue_.Free();
                         exit_.Free();
-                        SDL_Delay(500);
+                        SDL_Delay(1000);
                         return CONTINUE;
                     }
                     else if(x>=rect_exit.x && x<=rect_exit.x+rect_exit.w && y>=rect_exit.y && y<=rect_exit.y+rect_exit.h){

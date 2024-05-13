@@ -2,6 +2,11 @@
 
 bool Live::InitHeart(SDL_Renderer* render_)
 {
+    for(int i=0; i<heart.size(); i++){
+        heart[i]->Free();
+        delete heart[i];
+    }
+
     BaseObject* heart1 = new BaseObject();
     BaseObject* heart2 = new BaseObject();
     BaseObject* heart3 = new BaseObject();
@@ -22,7 +27,7 @@ void Live::RenderHeart(SDL_Renderer* render_, int& mang)
 {
     int x_ = 20;
     for(int i=0; i<mang; i++){
-        heart[i]->SetRect(x_, 150);
+        heart[i]->SetRect(x_, 50);
         heart[i]->Render(render_);
         x_ += 50;
     }
