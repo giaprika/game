@@ -2,7 +2,7 @@
 Họ và Tên: Nguyễn Đăng Giáp
 MSSV: 23021539
 Chủ đề game: Flappy Bird
-Ngưỡng điểm mà e xứng đáng: 9,5
+Ngưỡng điểm mà e xứng đáng: 9
 Lí do cho ngưỡng điểm đó:
  - Game có đầy đủ các yêu cầu của ngưỡng điểm 8,5 và có âm thang sinh động.
  - Game có Menu, chọn một trong các con chim để chơi, có Pause game, có Play again, có High score, có Rule để người chơi đọc.
